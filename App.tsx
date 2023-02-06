@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app with chat fucking gpttt !!</Text>
+      <Text>Open up App.tsx to start working on your app with chat fucking gpt !!!!</Text>
       <StatusBar style="auto" />
     </View>
   );
