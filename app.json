@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "30b986df-364e-4a4d-8bdd-4d5eb893681e"
+      }
+    },
+    "owner": "yohanov"
   }
 }
