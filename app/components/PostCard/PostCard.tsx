@@ -4,6 +4,8 @@ import { FontAwesome5, Entypo, Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur'
 import Swiper from 'react-native-swiper';
 
+import CustomText from '../CustomText/CustomText';
+
 const imagess = [
     {
       id: 1,
@@ -32,17 +34,20 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({ description, images, blurred }) => {
-    const [liked, setLiked] = useState(false)
+
    return (
     <View style={styles.mainContainer}>
         <View style={styles.container}>
+            <BlurView intensity={70} 
+                    tint="default">
+
             <View style={styles.imagesContainer}>
                 <Swiper 
                     loop={false}
                     paginationStyle={{justifyContent: 'flex-end',marginRight: 10}}
-                    dotColor="white"
+                    dotColor="grey"
                     dotStyle={styles.dotStyle}
-                    activeDotColor='black'
+                    activeDotColor='white'
                     activeDotStyle={styles.dotStyle}
                 >
                     {imagess.map(image => (
@@ -57,13 +62,14 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred }) => 
             </View>
             {description &&
             <View style={styles.description}>
-                <Text style={{fontSize: 18}}>{description}</Text>
+                <CustomText>{description}</CustomText>
             </View>}
+            </BlurView>
         </View>
         {!blurred &&
         <View style={styles.iconContainer} testID="iconcontainer">
-            <Ionicons name="heart-outline" size={24} color="black" style={{marginBottom: 15}}/>
-            <Entypo name="share" size={24} color="black" />
+            <Ionicons name="heart-outline" size={24} color="white" style={{marginBottom: 15}}/>
+            <Entypo name="share" size={24} color="white" />
         </View>}
         {
             blurred && 
@@ -73,7 +79,7 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred }) => 
                     testID='blurview'
                     style={styles.blurView}>    
                     <View style={styles.overlayContainer}>
-                        <FontAwesome5 name="lock" size={44} color="black" />
+                        <FontAwesome5 name="lock" size={44} color="white" />
                     </View>
                 </BlurView>
         }
@@ -87,13 +93,12 @@ const styles = StyleSheet.create({
         margin: 10,
         alignItems: "flex-end",
         overflow: "hidden",
-        padding: 2,
+        padding: 3,
     },
    container: {
-    borderWidth: 1,
     borderRadius: 15,
     width: "90%",
-    overflow:"hidden"
+    overflow:"hidden",
    },
    dotStyle: {
     width: 5,
@@ -103,7 +108,8 @@ const styles = StyleSheet.create({
     height: 300,
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    padding: 2
    },
    description: {
     height: 'auto',
@@ -118,15 +124,15 @@ const styles = StyleSheet.create({
     width: "10%",
     height: 100,
     padding: 5,
-    borderBottomRightRadius: 15,
-    borderRightWidth: 1
+    borderRightWidth: 1,
+    borderColor: "white"
    },
    blurView: {
     position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0,
+    right: "10%",
     borderRadius: 15,
     overflow: "hidden"
    },

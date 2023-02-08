@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import CustomButton from './app/components/CustomButton/CustomeButton';
-import CustomInput from './app/components/CustomInput/CustomInput';
 import CustomScreen from './app/components/CustomScreen/CustomScreen';
 import PostCard from './app/components/PostCard/PostCard';
 
-
+import { Provider } from 'react-redux'
+import { store } from './app/redux/store'
 
 const description = "Demain le psg affonte l'om. Veratti est la pierre angulare du jeu paeratti est parisien on espere tous qu'il sera present demain avec la team !"
 const images = [
@@ -15,7 +14,9 @@ const images = [
   },
 ]
 export default function App() {
+
   return (
+    <Provider store={store}>
     <CustomScreen>
     <ScrollView style={styles.container}>
       <Text>Open up App.tsx to start working on your app with chat fucking gpt !</Text>
@@ -25,12 +26,12 @@ export default function App() {
       <StatusBar style="auto" />
     </ScrollView>
     </CustomScreen>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
 });
