@@ -14,7 +14,7 @@ const CustomScreen: React.FC<Props> = ({ children }) => {
 
   const theme = useAppSelector((state) => state.context.theme)
   return (
-    <SafeAreaView style={[styles.container, { paddingTop: Constants.statusBarHeight, backgroundColor: theme === "dark" ? colors.dark.background : colors.light.background}]}>
+    <SafeAreaView style={[styles.container, { paddingTop: Constants.statusBarHeight, backgroundColor: theme === "dark" ? colors.dark.background : colors.light.background,}]}>
       <View style={[styles.container, {backgroundColor: theme === "dark" ? colors.dark.background : colors.light.background}]}>
         {children}
       </View>

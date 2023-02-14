@@ -2058,6 +2058,13 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
+"@stripe/react-stripe-js@^1.16.4":
+  version "1.16.4"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-1.16.4.tgz#d25c9bb93ae2d21d1d5a2d8a275e1e4e2732ba73"
+  integrity sha512-x+Zstd3mHctNbSATOdbA2rOVXqGhbLU1ziNgcWqYCaFXj2dPKzjkBiUJfDhoARJVXVGOts0oZ8teTkOFY/ZRzQ==
+  dependencies:
+    prop-types "^15.7.2"
+
 "@testing-library/jest-dom@^5.16.5":
   version "5.16.5"
   resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.16.5.tgz#3912846af19a29b2dbf32a6ae9c31ef52580074e"
@@ -3831,6 +3838,11 @@ expo-status-bar@~1.4.2:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.4.2.tgz#14f2b9a6dc7d550578421f07e0046f5fafc2b403"
   integrity sha512-ZWjO6D4ARGYfAd3SWDD3STNudHDhyBZDZjhhseqoEmsf7bS9ykny8KKOhlzJW24qIQNPhkgdvHhaw9fQwMJy3Q==
+
+expo-stripe@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/expo-stripe/-/expo-stripe-1.0.0.tgz#af7cfb9df10dfa2aeb228067f4bb241035845599"
+  integrity sha512-tcju8IQUk4bD8A9F0KMaKJbE7oL5+s9l+yPIv0yVectUBOlkbuzj0hrufQGqHZ+2QLbyftRFTQJO+43sc5nmCA==
 
 expo-structured-headers@~3.0.0:
   version "3.0.1"
@@ -7047,6 +7059,11 @@ react-native-ratings@8.0.4:
   integrity sha512-Xczu5lskIIRD6BEdz9A0jDRpEck/SFxRqiglkXi0u67yAtI1/pcJC76P4MukCbT8K4BPVl+42w83YqXBoBRl7A==
   dependencies:
     lodash "^4.17.15"
+
+react-native-safe-area-context@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.5.0.tgz#9208313236e8f49e1920ac1e2a2c975f03aed284"
+  integrity sha512-0WORnk9SkREGUg2V7jHZbuN5x4vcxj/1B0QOcXJjdYWrzZHgLcUzYWWIUecUPJh747Mwjt/42RZDOaFn3L8kPQ==
 
 react-native-size-matters@^0.3.1:
   version "0.3.1"

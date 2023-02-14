@@ -1,4 +1,3 @@
-import { createSlice } from '@reduxjs/toolkit';
 import contextSlice, { initialState, setTheme, switchTheme } from '../contextSlice';
 
 describe('contextSlice', () => {
