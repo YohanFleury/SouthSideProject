@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     width: "10%",
     height: 100,
     padding: 5,
-    borderRightWidth: 1,
+    borderBottomWidth: 1,
     borderColor: "white"
    },
    blurView: {

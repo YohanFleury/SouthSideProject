@@ -1,11 +1,16 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react-native'
 import PostCard from '../PostCard'
+import { Provider } from 'react-redux'
+import { store } from '../../../redux/store'
 
 describe('PostCard component', () => {
   it('renders images and description', () => {
     const description = 'Test description'
-    const { getByText, getByTestId } = render(<PostCard blurred description={description} />)
+    const { getByText, getByTestId } = render(
+    <Provider store={store}>
+      <PostCard blurred description={description} />
+    </Provider>)
 
     // Validate that the description is displayed
     expect(getByText(description)).toBeTruthy()
