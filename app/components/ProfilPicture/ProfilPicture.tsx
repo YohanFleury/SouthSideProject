@@ -5,7 +5,7 @@ import { View, Image, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 interface ProfilPictureProps {
     size: number;
     source: any;
-    onPress: () => void;
+    onPress?: () => void;
 }
 
 const ProfilPicture = ({ size, source, onPress }: ProfilPictureProps) => {
@@ -27,7 +27,7 @@ const ProfilPicture = ({ size, source, onPress }: ProfilPictureProps) => {
                 borderRadius: (size+3)/2,
                 overflow: 'hidden',
             }}>
-                <Image source={source} style={{
+                <Image source={{uri: source}} style={{
                 height: size+3,
                 width: size+3
                 }} />

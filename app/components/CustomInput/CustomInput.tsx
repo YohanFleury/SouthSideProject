@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, TextInputProps } from 'react-native';
 import colors from '../../config/colors';
 import { useAppSelector } from '../../redux/store'
 
@@ -10,10 +10,22 @@ interface Props {
   returnKeyType?: 'next' | 'done' | 'search';
   onSubmitEditing?: () => void;
   onFocus?:() => void;
-  width?: string;
+  width?: string | number;
+  onBlur?: (e: any) => void;
+  secureTextEntry?: boolean;
 }
 
-const CustomInput: React.FC<Props> = ({ value, onChangeText, placeholder, returnKeyType, onSubmitEditing, onFocus, width = "70%" }) => {
+const CustomInput: React.FC<Props> = ({ 
+  value, 
+  onChangeText, 
+  placeholder, 
+  returnKeyType, 
+  onSubmitEditing, 
+  onFocus, 
+  onBlur,
+  secureTextEntry,
+  width = "70%",
+}) => {
   const inputRef = useRef<TextInput>(null);
 
   const theme = useAppSelector((state) => state.context.theme)
@@ -31,6 +43,8 @@ const CustomInput: React.FC<Props> = ({ value, onChangeText, placeholder, return
             placeholder={placeholder}
             returnKeyType={returnKeyType}
             onSubmitEditing={onSubmitEditing}
+            onBlur={onBlur}
+            secureTextEntry={secureTextEntry}
             style={
               [styles.input, {borderColor: theme ==="dark" ? colors.dark.primary : colors.light.primary, width: width, }]
             }
@@ -49,10 +63,9 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderWidth: 1,
+    borderBottomWidth: 1,
     marginVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 25,
     color: 'white',
     flexDirection: 'row',
     justifyContent: 'center',

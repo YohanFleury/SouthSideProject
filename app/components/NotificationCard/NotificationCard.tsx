@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableWithoutFeedback} from 'react-native'
+import { View, StyleSheet, Text, TouchableWithoutFeedback, ImageURISource} from 'react-native'
 import { Divider } from 'react-native-elements'
 
 import colors from '../../config/colors'
@@ -17,7 +17,7 @@ interface NotifCardProps {
 
 const NotificationCard = ({ content, time, onPress, onPressAvatar, source }: NotifCardProps) => {
     return (
-        <TouchableWithoutFeedback onPress={onPress} >
+        <TouchableWithoutFeedback testID='notification-card' onPress={onPress} >
             <View>
                 <View style={styles.container}>
                     <View style={styles.avatar}>

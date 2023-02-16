@@ -5,6 +5,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Divider } from 'react-native-elements'
 import { Fontisto } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { useRoute, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { ResearchRoutesParams} from '../../navigation/ResearchNavigator/ResearchNavigator'
 
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CoverPicture from '../../components/CoverPicture/CoverPicture';
@@ -15,11 +18,14 @@ import CustomScreen from '../../components/CustomScreen/CustomScreen'
 import BackButton from '../../components/BackButton/BackButton';
 import PostCard from '../../components/PostCard/PostCard';
 
-const description = "Demain le psg affonte l'om. Veratti est la pierre angulare du jeu parisien on espere tous qu'il sera present demain avec la team !"
 
+type ProfilScreenRouteProp = RouteProp<ResearchRoutesParams, 'Profil'>;
 
 const ProfilScreen = () => {
-    
+
+    const route = useRoute<ProfilScreenRouteProp>()
+    const { id, name, username, description, profilPicture, isCertified } = route.params;
+    console.log('pp', profilPicture)
     return (
         <CustomScreen>
         <View style={styles.BackButton}>
@@ -27,27 +33,23 @@ const ProfilScreen = () => {
         </View>
         <ScrollView>
             <View style={styles.mainContainer}>
-                <View style={styles.test}>
-                    <CoverPicture source={require('../../assets/psg.jpg')} />
                     <View style={[styles.ppContainer, {width: 80+10, height: 80+10, borderRadius: (80+10)/2}]}>
-                        <ProfilPicture onPress={() => console.log('pp')} size={80} source={require('../../assets/verratti.png')} />
+                        <ProfilPicture size={80} source={profilPicture} />
                     </View>
-                </View>
                 <View style={styles.container2}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20}}>
                         <View style={{width: '80%'}}>
                             <View style={styles.verified}>
                                 <CustomText style={styles.accountName}>
-                                    Maxime Neymar
+                                    {name}
                                 </CustomText>
                                 <Feather name="check-circle" size={18} color="white" />
                             </View>
                             <CustomText style={styles.userName}>
-                                @max_psg                    
+                                {`@${username}`}                    
                             </CustomText>
                             <CustomText style={styles.bio}>
-                                Investisseur cryptos, ici on fait gagner sale !
-                                Satisfait ou remboursé direct garçon
+                                {description}
                             </CustomText>
                         </View>
                         <View style={styles.iconsActions}>
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
         marginTop: "-15%",
         marginRight: "-3%",
         alignItems: 'flex-end',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-between'
         
     },
 
@@ -146,12 +148,10 @@ const styles = StyleSheet.create({
     test: {
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
-        marginBottom: -50
     },
     ppContainer: {
         backgroundColor: colors.lightGrey,
         alignItems: 'center',
-        bottom: 50,
         left: "35%",
     },
     userName: {

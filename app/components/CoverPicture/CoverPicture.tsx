@@ -8,9 +8,9 @@ interface CoverPictureProps {
 
 const CoverPicture = ({ source, onPress }: CoverPictureProps) => {
     return (
-    <TouchableNativeFeedback onPress={onPress}>
+    <TouchableNativeFeedback testID='cover-container' onPress={onPress}>
         <View style={styles.container}>
-            <Image style={styles.image} source={source} />
+            <Image testID='cover-picture' style={styles.image} source={source} />
         </View>
     </TouchableNativeFeedback>
     )
