@@ -8,9 +8,11 @@ import HomeScreen from '../../screens/HomeScreen/HomeScreen';
 import colors from '../../config/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import NewPostScreen from '../../screens/NewPostScreen/NewPostScreen';
 
 export type HomeNavigatorParams = {
     Home: undefined;
+    NewPost: undefined;
     }
 const Stack = createNativeStackNavigator<HomeNavigatorParams>()
 
@@ -19,13 +21,8 @@ const HomeNavigator = ({navigation}: any) => {
     return (
     <Stack.Navigator>
         <Stack.Screen name={routes.HOME} component={HomeScreen} options={
-         {headerTitle: () => {
-         return (
-            <FontAwesome onPress={() => navigation.openDrawer()} name="user-circle-o" size={27} color={colors.dark.primary} />
-            
-         )
-         }, 
-         headerShown: true, fullScreenGestureEnabled: true, headerStyle: {backgroundColor: colors.dark.background}}
+         {
+         headerShown: false, fullScreenGestureEnabled: true, headerStyle: {backgroundColor: colors.dark.background}}
          
         } 
         

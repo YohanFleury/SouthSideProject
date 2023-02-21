@@ -16,7 +16,6 @@ const HomeScreen = () => {
       <CustomScreen>
         
         <CustomText>Home !</CustomText>
-        <NewPostScreen />
 
       </CustomScreen>
   );

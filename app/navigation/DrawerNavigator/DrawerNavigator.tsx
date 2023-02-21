@@ -12,7 +12,10 @@ import AppNavigator from '../AppNavigator/AppNavigator'
 
 const Drawer = createDrawerNavigator()
 
-
+export type DrawerNavigatorParams = {
+    AppNavigator: undefined;
+    Wallet: undefined;
+    }
 
 const DrawerNavigator = () => {
     return (

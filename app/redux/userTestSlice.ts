@@ -186,13 +186,15 @@ const users = [
 type initialStateProps = {
   usersArray: any;
   currentUser: any[] | null;
-  imagesPost: any[]
+  imagesPost: any[];
+  openNewPostModal: boolean;
 }
 
 export const initialState: initialStateProps = {
     usersArray: users,
     currentUser: null,
-    imagesPost: []
+    imagesPost: [],
+    openNewPostModal: false
 }
 
 export const userTestSLice = createSlice({
@@ -229,11 +231,24 @@ export const userTestSLice = createSlice({
       resetImagesUris: (state) => {
         state.imagesPost = []
       },
+
+      setOpenNewPostModal: (state, {payload}) => {
+        state.openNewPostModal = payload
+      }
         
     }
 })
 
 
-export const { filterUsers, resetUsers, setCurrentUser, addImagesPost, deleteImageUri, resetImagesUris} = userTestSLice.actions
+export const { 
+  filterUsers, 
+  resetUsers, 
+  setCurrentUser, 
+  addImagesPost,
+  deleteImageUri, 
+  resetImagesUris,
+  setOpenNewPostModal
+
+} = userTestSLice.actions
 
 export default userTestSLice.reducer

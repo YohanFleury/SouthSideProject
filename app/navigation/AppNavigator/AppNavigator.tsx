@@ -20,11 +20,20 @@ import HomeScreen from '../../screens/HomeScreen/HomeScreen';
 
 import colors from '../../config/colors';
 import WalletScreen from '../../screens/WalletScreen/WalletScreen';
+import NewPostScreen from '../../screens/NewPostScreen/NewPostScreen';
+import NewpostButton from '../../components/NewpostButton/NewpostButton';
+import { useAppDispatch } from '../../redux/store';
+import { setOpenNewPostModal } from '../../redux/userTestSlice';
+import { View } from 'react-native';
 
 const Tab = createBottomTabNavigator()
 
+const DefaultComponent = () => <View></View>
+
 const AppNavigator = () => {
     const navigation = useNavigation<NativeStackNavigationProp<HomeNavigatorParams>>()
+    const dispatch = useAppDispatch()
+
     return (
         <Tab.Navigator screenOptions={({ route }) => ({
             tabBarIcon: ({ focused }) => {
@@ -36,7 +45,10 @@ const AppNavigator = () => {
                return <Fontisto style={{marginBottom: 4}} name={focused ? "bell-alt" : "bell"} size={21} color={focused ? colors.dark.primary : colors.white} />
               } else if (route.name === routes.CHAT) {
                return  <MaterialCommunityIcons name="treasure-chest" color={focused ? colors.dark.primary : colors.white} size={26} />
-              } 
+              } else return <NewpostButton onPress={() => {
+                dispatch(setOpenNewPostModal(true))
+                navigation.navigate(routes.NEWPOST)
+              }}/>
             },
             tabBarLabel:() => {return null},
             fullScreenGestureEnabled: true,
@@ -44,7 +56,8 @@ const AppNavigator = () => {
           })}>
             <Tab.Screen name={routes.HOMENAVIGATOR} component={HomeNavigator} options={{headerShown: false,}}  />
             <Tab.Screen name={routes.RESEARCHNAVIGATOR} component={ResearchNavigator} options={{headerShown: false}} />
-            <Tab.Screen name={routes.NOTIFICATIONS} component={NotificationScreen} options={{headerShown: false}} />
+            <Tab.Screen name={routes.NEWPOST} component={NewPostScreen} options={{headerShown: false}} listeners={() => ({tabPress: event => event.preventDefault()})} />
+            <Tab.Screen name={routes.NOTIFICATIONS} component={NotificationScreen} options={{headerShown: false}}  />
             <Tab.Screen name={routes.CHAT} component={ChatScreen} options={{headerShown: false}} />
         </Tab.Navigator>
     )
