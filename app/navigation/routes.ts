@@ -7,6 +7,8 @@ export default Object.freeze({
     PROFIL: 'Profil',
     RESEARCH: 'Research',
     WALLET: 'Wallet',
+    NEWPOST: 'NewPost',
+    DefaultComponent: 'DefaultComponent',
     
     // Navigators
     HOMENAVIGATOR: 'HomeNavigator',

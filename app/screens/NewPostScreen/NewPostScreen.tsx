@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState, useMemo, useCallback} from 'react'
-import { useNavigation } from '@react-navigation/native'
+import React, {useEffect, useRef, useState, useMemo, useCallback, useLayoutEffect} from 'react'
+import { useNavigation, useNavigationState } from '@react-navigation/native'
 import { View, StyleSheet, Text, Switch, FlatList, Button, TextInput, KeyboardAvoidingView, Pressable, Platform, TouchableWithoutFeedback, Keyboard, Image, Modal} from 'react-native'
 import { AntDesign, MaterialIcons, FontAwesome, MaterialCommunityIcons, Ionicons, Entypo} from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
@@ -14,23 +14,35 @@ import CustomScreen from '../../components/CustomScreen/CustomScreen';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CustomText from '../../components/CustomText/CustomText';
-import { addImagesPost, deleteImageUri, resetImagesUris } from '../../redux/userTestSlice';
+import { addImagesPost, deleteImageUri, resetImagesUris, setOpenNewPostModal } from '../../redux/userTestSlice';
 import ParamsModal from '../../components/ParamsModal/ParamsModal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import routes from '../../navigation/routes';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { HomeNavigatorParams } from '../../navigation/HomeNavigator/HomeNavigator';
 
 const NewPostScreen = () => {
 
+    const navigation = useNavigation<NativeStackNavigationProp<HomeNavigatorParams>>()
+    const navigationState = useNavigationState(state => state)
+    console.log(navigationState)
     const dispatch = useAppDispatch()
     const imagesSelected = useAppSelector((state) => state.users.imagesPost)
+    const visible = useAppSelector((state) => state.users.openNewPostModal)
 
     const [inputValue, setInputValue] = useState<string>('')
     const [openModal, setOpenModal] = useState<boolean>(false)
-    const [paramsModalVisible, setParamsModalVisible] = useState<boolean>(false)
+    const [paramsModalVisible, setParamsModalVisible] = useState<boolean>()
     const [isPrivate, setIsPrivate] = useState<boolean>(false)
 
     useEffect(() => {
       dispatch(resetImagesUris())
     }, []) 
+    
+    useLayoutEffect(() => {
+        
+        setParamsModalVisible(true)
+    }, [])
     
 
     const onSelectImage = async () => {
@@ -91,11 +103,10 @@ const NewPostScreen = () => {
       }, []);
     
    return (
-    <>
-       <CustomButton title="open modal" onPress={() => setOpenModal(true)}/>
+    <View style={{flex: 1, backgroundColor: colors.dark.background}}>
         <Modal
         animationType='slide'
-        visible={openModal}
+        visible={visible}
         >
             <CustomScreen drawerStyle={{padding: 0}}>
             <KeyboardAvoidingView style={{flex: 1, padding: 15, backgroundColor: paramsModalVisible ? '#17172E' : 'transparent'}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -107,7 +118,10 @@ const NewPostScreen = () => {
                     <View style={{justifyContent: 'space-between', flex: 0.9, padding: 5,}}> 
                         <View style={{ flex: 0.5, }}>
                             <View style={styles.header}>
-                                <Button title='Annuler' onPress={() => setOpenModal(false)} color={colors.white} />
+                                <Button title='Annuler' onPress={() => {
+                                    dispatch(setOpenNewPostModal(false))
+                                    navigation.navigate(routes.HOME)
+                                    }} color={colors.white} />
                                 {inputValue.length > 0 &&
                                 <Button 
                                 color={colors.white} 
@@ -220,9 +234,9 @@ const NewPostScreen = () => {
                 </BottomSheetModal>
             </View>
             </BottomSheetModalProvider>
-    </CustomScreen>
-        </Modal>
-        </>
+        </CustomScreen>
+    </Modal>
+    </View>
    )
 }
 

@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator<ResearchRoutesParams>()
 
 const ResearchNavigator = () => {
    return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName={routes.RESEARCH}>
         <Stack.Screen name={routes.RESEARCH} component={ResearchScreen} />
         <Stack.Screen name={routes.PROFIL} component={ProfilScreen} options={{headerShown: false, fullScreenGestureEnabled: true}} />
     </Stack.Navigator>

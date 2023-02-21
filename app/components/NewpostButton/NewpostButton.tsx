@@ -1,36 +1,39 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableHighlight } from 'react-native'
 import {MaterialCommunityIcons } from '@expo/vector-icons'
 
 import colors from '../../config/colors'
 
+type npBtn = {
+    onPress: () => void;
+}
 
-const NewpostButton = () => {
+const NewpostButton: React.FC<npBtn> = ({ onPress }) => {
     return (
-        <View style={styles.container}>
-          <View style={styles.sousContainer}>
-          <MaterialCommunityIcons name="plus-circle" size={37} color={colors.white} />
-          </View>
-        </View>
+          <TouchableHighlight onPress={onPress} style={styles.sousContainer}>
+          <MaterialCommunityIcons name="plus-circle" size={27} color={colors.white} />
+          </TouchableHighlight>
      )
 }
 
 const styles = StyleSheet.create({
     container: {
          backgroundColor: colors.white,
-         height: 75,
-         width: 75,
-         borderRadius: 37.5,
+         height: 55,
+         width: 55,
+         borderRadius: 22.5,
          justifyContent: 'center',
         alignItems: 'center'
      },
      sousContainer: {
-        backgroundColor: colors.dark.primary,
-        height: 70,
-        width: 70,
-        borderRadius: 35,
+        borderWidth: 1,
+        borderColor: colors.dark.primary,
+        height: 40,
+        width: 40,
+        borderRadius: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: colors.dark.background
  
     }
  })

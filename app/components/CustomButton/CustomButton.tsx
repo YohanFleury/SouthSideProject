@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 25,
     alignItems: 'center',
+    backgroundColor: colors.dark.primary
   },
 });
 
