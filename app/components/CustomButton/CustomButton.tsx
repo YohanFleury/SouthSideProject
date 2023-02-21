@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 
 import { useAppSelector } from '../../redux/store'
 import colors from '../../config/colors'
@@ -9,16 +9,19 @@ interface Props {
   title: string;
   onPress: () => void;
   style?: ViewStyle;
+  textStyle?: TextStyle;
+  icon?: any;
 }
 
-const CustomButton: React.FC<Props> = ({ title, onPress, style }) => {
+const CustomButton: React.FC<Props> = ({ title, onPress, style, textStyle, icon }) => {
 
   const theme = useAppSelector((state) => state.context.theme)
 
   return (
     <TouchableOpacity testID='button-container' 
       style={[styles.button, style, {borderColor: theme === "dark" ? colors.dark.primary : colors.light.primary}]} onPress={onPress}>
-      <CustomText>{title}</CustomText>
+      <CustomText style={textStyle}>{title}</CustomText>
+      {icon}
     </TouchableOpacity>
   );
 };

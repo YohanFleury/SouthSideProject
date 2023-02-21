@@ -1,7 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView, Alert } from 'react-native';
+
+// Navigation
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { AuthRoutesParams } from '../../navigation/AuthNavigator/AuthNavigator';
+import routes from '../../navigation/routes'
+
+// Forms and Auth
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import { auth, database } from '../../../config/firebase';
+
+// Components
 import CustomButton from '../../components/CustomButton/CustomButton';
 import CustomInput from '../../components/CustomInput/CustomInput';
 import CustomScreen from '../../components/CustomScreen/CustomScreen';
@@ -21,8 +34,14 @@ const RegisterSchema = Yup.object().shape({
 });
 
 const RegisterScreen: React.FC = () => {
+
+    const navigation = useNavigation<NativeStackNavigationProp<AuthRoutesParams>>()
+
   const handleRegister = (values: RegisterValues) => {
-    // Do something with the registration values, e.g. make an API call
+
+    createUserWithEmailAndPassword(auth, values.email, values.password)
+        .then(() => Alert.alert("Ouais c'est baaaaaan"))
+        .catch((err) => Alert.alert("Y a pas wesh !", err.message))
     console.log(values);
   };
 
@@ -40,7 +59,7 @@ const RegisterScreen: React.FC = () => {
                 onChangeText={handleChange('email')}
                 value={values.email}
                 onBlur={handleBlur('email')}
-                placeholder="Adresse email"
+                placeholder="Email"
               />
               {errors.email && touched.email && <Text style={styles.error}>{errors.email}</Text>}
 
@@ -48,7 +67,7 @@ const RegisterScreen: React.FC = () => {
                 onChangeText={handleChange('username')}
                 value={values.username}
                 onBlur={handleBlur('username')}
-                placeholder="Nom d'utilisateur"
+                placeholder="Username"
               />
               {errors.username && touched.username && (
                 <Text style={styles.error}>{errors.username}</Text>
@@ -82,6 +101,7 @@ const RegisterScreen: React.FC = () => {
             </View>
           )}
         </Formik>
+        <CustomButton title='Go to Login' onPress={() => navigation.navigate(routes.LOGIN)} />
       </KeyboardAvoidingView>
     </CustomScreen>
   );

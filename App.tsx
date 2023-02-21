@@ -1,34 +1,50 @@
+import React, {useState} from 'react';
+
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import CustomScreen from './app/components/CustomScreen/CustomScreen';
 import PostCard from './app/components/PostCard/PostCard';
+import { GestureHandlerRootView, gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import BottomSheet, {BottomSheetModalProvider, BottomSheetModal} from '@gorhom/bottom-sheet';
 
 import { Provider } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native';
 import { store } from './app/redux/store'
 
 import AppNavigator from './app/navigation/AppNavigator/AppNavigator'
-import CustomText from './app/components/CustomText/CustomText';
-import ResearchScreen from './app/screens/ResearchScreen/ResearchScreen';
-import ProfilScreen from './app/screens/ProfilScreen/ProfilScreen';
-import LoginScreen from './app/screens/LoginScreen/LoginScreen';
-import RegisterScreen from './app/screens/RegisterScreen/RegisterScreen';
+import DrawerNavigator from './app/navigation/DrawerNavigator/DrawerNavigator';
+// Auth
+import { auth } from './config/firebase'
+import AuthNavigator from './app/navigation/AuthNavigator/AuthNavigator';
+import ActivityIndicator from './app/components/ActivityIndicator/ActivityIndicator';
 
-const description = "Demain le psg affonte l'om. Veratti est la pierre angulare du jeu parisien on espere tous qu'il sera present demain avec la team !"
-const images = [
-  {
-    id: 1,
-    uri:'https://picsum.photos/250/300'
-  },
-]
-export default function App() {
+
+const App = () => {
+  const [currentUser, setCurrentUser] = React.useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+      setLoading(false)
+    });
+    return unsubscribe;
+  }, []);
+
+  if (loading) {
+    return (
+        <ActivityIndicator visible={loading} />
+    )
+  }
 
   return (
+  <BottomSheetModalProvider>
     <NavigationContainer>
-    <Provider store={store}>
-      <RegisterScreen />
-    </Provider>
-    </NavigationContainer>
+      <Provider store={store}>
+        {currentUser ? <DrawerNavigator /> : <AuthNavigator />}
+      </Provider>
+      </NavigationContainer>
+  </BottomSheetModalProvider>
   );
 }
 
@@ -38,6 +54,7 @@ const styles = StyleSheet.create({
   },
 });
 
+export default gestureHandlerRootHOC(App)
 
 {/* <CustomScreen>
 <ScrollView style={styles.container}>
