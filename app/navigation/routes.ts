@@ -1,9 +1,19 @@
 export default Object.freeze({
+    // App
     CHAT: 'Chat',
     DRAWER: 'Drawer',
+    HOME: 'Home',
     NOTIFICATIONS: 'Notifications',
     PROFIL: 'Profil',
     RESEARCH: 'Research',
+    WALLET: 'Wallet',
+    
+    // Navigators
+    HOMENAVIGATOR: 'HomeNavigator',
     RESEARCHNAVIGATOR: 'ResearchNavigator',
-    WALLET: 'Wallet'
+    APPNAVIGATOR: 'AppNavigator',
+
+    // Auth
+    LOGIN: 'Login',
+    REGISTER: 'Register'
 })

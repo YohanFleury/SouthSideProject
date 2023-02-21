@@ -49,7 +49,7 @@ const CustomInput: React.FC<Props> = ({
               [styles.input, {borderColor: theme ==="dark" ? colors.dark.primary : colors.light.primary, width: width, }]
             }
             testID='input'
-            placeholderTextColor={theme ==="dark" ? colors.lightGrey : colors.light.texte}
+            placeholderTextColor={theme ==="dark" ? colors.medium : colors.light.texte}
           />
         </View>
       </TouchableWithoutFeedback>
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderBottomWidth: 1,
     marginVertical: 10,
-    paddingHorizontal: 20,
     color: 'white',
     flexDirection: 'row',
     justifyContent: 'center',

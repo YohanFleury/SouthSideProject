@@ -183,9 +183,16 @@ const users = [
       },
 ]
 
+type initialStateProps = {
+  usersArray: any;
+  currentUser: any[] | null;
+  imagesPost: any[]
+}
 
-export const initialState = {
-    usersArray: users
+export const initialState: initialStateProps = {
+    usersArray: users,
+    currentUser: null,
+    imagesPost: []
 }
 
 export const userTestSLice = createSlice({
@@ -202,14 +209,31 @@ export const userTestSLice = createSlice({
         state.usersArray = result;
       },
 
-        resetUsers: (state) => {
-            state.usersArray = users
-        },
+      resetUsers: (state) => {
+          state.usersArray = users
+      },
+      
+      setCurrentUser: (state, {payload}) => {
+        state.currentUser = payload
+      },
+
+      addImagesPost: (state, {payload}) => {
+        state.imagesPost.push(payload)
+      },
+
+      deleteImageUri: (state, {payload}) => {
+        state.imagesPost.map((image: any, index: number) => {
+            if(image.uri === payload) state.imagesPost.splice(index, 1)
+        })
+      },
+      resetImagesUris: (state) => {
+        state.imagesPost = []
+      },
         
     }
 })
 
 
-export const { filterUsers, resetUsers} = userTestSLice.actions
+export const { filterUsers, resetUsers, setCurrentUser, addImagesPost, deleteImageUri, resetImagesUris} = userTestSLice.actions
 
 export default userTestSLice.reducer

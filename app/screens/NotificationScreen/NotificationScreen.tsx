@@ -10,31 +10,31 @@ const notifications = [
         id: 1,
         notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
         notifTime: "6h",
-        avatarSource: require('../../assets/verratti.png')
+        avatarSource: 'https://randomuser.me/api/portraits/men/2.jpg',
     },
     {
         id: 2,
         notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
         notifTime: "10h",
-        avatarSource: require('../../assets/verratti.png')
+        avatarSource: 'https://randomuser.me/api/portraits/men/6.jpg',
     },
     {
         id: 3,
         notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
         notifTime: "11h",
-        avatarSource: require('../../assets/verratti.png')
+        avatarSource: 'https://randomuser.me/api/portraits/men/21.jpg',
     },
     {
         id: 4,
         notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
         notifTime: "17h",
-        avatarSource: require('../../assets/verratti.png')
+        avatarSource: 'https://randomuser.me/api/portraits/men/22.jpg',
     },
     {
         id: 5,
         notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
         notifTime: "21h",
-        avatarSource: require('../../assets/verratti.png')
+        avatarSource: 'https://randomuser.me/api/portraits/men/12.jpg'
     },
 ]
 

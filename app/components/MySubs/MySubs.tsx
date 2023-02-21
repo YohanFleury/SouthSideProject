@@ -29,7 +29,6 @@ const MySubs: React.FC<MySubsProps> = ({data, title}) => {
                 data={data}
                 keyExtractor={data => data.id.toString()}
                 renderItem={({ item }) => {
-                    console.log('item : ', item)
                     return (
                     <MySubCard name={item.name} key={item.id} source={item.profilPicture} onPress={() => navigation.navigate(routes.PROFIL, {
                         id: item.id,
