@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
      },
      sousContainer: {
         borderWidth: 1,
-        borderColor: colors.dark.primary,
+        borderColor: colors.white,
         height: 40,
         width: 40,
         borderRadius: 20,
