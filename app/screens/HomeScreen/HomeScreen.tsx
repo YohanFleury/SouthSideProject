@@ -1,22 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, PanResponder, Dimensions } from 'react-native';
+import { View, StyleSheet, PanResponder, Dimensions, FlatList } from 'react-native';
 import CustomScreen from '../../components/CustomScreen/CustomScreen';
-import CustomText from '../../components/CustomText/CustomText';
-import { createDrawerNavigator, useDrawerStatus, useDrawerProgress} from '@react-navigation/drawer'
-import colors from '../../config/colors';
-import Animated from 'react-native-reanimated';
-import NewPostScreen from '../NewPostScreen/NewPostScreen';
-import ParamsModal from '../../components/ParamsModal/ParamsModal';
-import BottomSheet, { BottomSheetView, BottomSheetModal, useBottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { useAppSelector } from '../../redux/store';
+import PostCard from '../../components/PostCard/PostCard';
+import { useScrollToTop } from '@react-navigation/native';
 
 
 const HomeScreen = () => {
+  const [postsList, setPostsList] = useState<any>()
+  const reduxPostList = useAppSelector(state => state.users.postsList)
+  const ref = React.useRef(null)
+
+  useEffect(() => {
+    setPostsList(reduxPostList)
+  }, [reduxPostList])
+  
+  useScrollToTop(ref)
+
+ 
 
   return (
       <CustomScreen>
-        
-        <CustomText>Home !</CustomText>
-
+        <FlatList
+          data={postsList}
+          ref={ref}
+          renderItem={({ item }) => (
+            <PostCard
+            username={item.username}
+            name={item.name}
+            likes={item.likes}
+            description={item.description}
+            images={item.images}
+            />
+          )}
+        />
       </CustomScreen>
   );
 };

@@ -6,7 +6,7 @@ import colors from '../../config/colors'
 
 
 type TextProp = {
-    children: string,
+    children: string | number,
     style?: TextStyle,
 }
 

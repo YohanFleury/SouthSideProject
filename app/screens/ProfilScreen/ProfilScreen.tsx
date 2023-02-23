@@ -76,12 +76,12 @@ const ProfilScreen = () => {
                     <Divider />
                 </View>
             </View>
-            <PostCard blurred={true} description={description} />
+            <PostCard blurred={false} description={description} />
+            <PostCard blurred={false} description={description} />
             <PostCard blurred={false} description={description} />
             <PostCard blurred description={description} />
             <PostCard blurred={false} description={description} />
-            <PostCard blurred={false} description={description} />
-            <PostCard blurred={false} description={description} />
+            <PostCard blurred={true} description={description} />
         </ScrollView>
     </CustomScreen>
 )

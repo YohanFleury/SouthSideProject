@@ -1,47 +1,67 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Image, Text } from 'react-native'
-import { FontAwesome5, Entypo, Ionicons } from '@expo/vector-icons';
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, Image, useWindowDimensions} from 'react-native'
+import { FontAwesome5, Entypo, Ionicons, MaterialIcons, Foundation, FontAwesome } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur'
 import Swiper from 'react-native-swiper';
 
 import CustomText from '../CustomText/CustomText';
+import ProfilPicture from '../ProfilPicture/ProfilPicture';
+import colors from '../../config/colors';
+import { Divider } from 'react-native-elements';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-const imagess = [
-    {
-      id: 1,
-      uri: 'https://picsum.photos/id/10/300/300',
-    },
-    {
-      id: 2,
-      uri: 'https://picsum.photos/id/100/300/300',
-    },
-    {
-      id: 3,
-      uri: 'https://picsum.photos/id/1000/300/300',
-    },
-  ]
-
-
-type ImageType = {
-    id: number,
-    uri: string,
-}
 
 interface PostCardProps {
     description?: string;
-    images?: ImageType[];
-    blurred: boolean;
+    images?: string[];
+    blurred?: boolean;
+    likes: number;
+    username: string;
+    name: string;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ description, images, blurred }) => {
+const DOUBLE_PRESS_DELAY = 300;
+
+const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, username, name, likes }) => {
+    const {width, height} = useWindowDimensions()
+    const [isLiked, setIsLiked] = useState<boolean>(false)
+    const [isSignet, setIsSignet] = useState<boolean>(false)
+    const [lastPress, setLastPress] = useState(0);
+    
+
+    const handleDoublePress = () => {
+      const time = new Date().getTime();
+      const delta = time - lastPress;
+  
+      if (delta < DOUBLE_PRESS_DELAY) {
+        setIsLiked(x => !x)
+      }
+      setLastPress(time);
+    };
 
    return (
-    <View style={styles.mainContainer}>
+       <View style={styles.mainContainer}>
         <View style={styles.container}>
-            <BlurView intensity={70} 
-                    tint="default">
+            <View style={styles.header}>
+                <View style={styles.profilInfos}>
+                    <View style={{flexDirection: 'row'}}>
+                        <ProfilPicture source='https://randomuser.me/api/portraits/women/1.jpg' size={45} />
+                        <View style={{justifyContent: 'space-evenly'}}>
+                            <CustomText style={{fontSize: 16, fontWeight: 'bold',}}>{name}</CustomText>
+                            <CustomText style={{fontSize: 14, color: colors.medium}}>{`@${username}`}</CustomText>
+                        </View>
+                    </View>
+                    <View>
+                        <MaterialIcons name="more-horiz" size={24} color="white" />
+                    </View>
+                </View>
+                {description &&
+                <View style={styles.description}>
+                    <CustomText style={{fontSize: 16}}>{description}</CustomText>
+                </View>}
+            </View>
 
-            <View style={styles.imagesContainer}>
+            {images &&
                 <Swiper 
                     loop={false}
                     paginationStyle={{justifyContent: 'flex-end',marginRight: 10}}
@@ -50,27 +70,37 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred }) => 
                     activeDotColor='white'
                     activeDotStyle={styles.dotStyle}
                 >
-                    {imagess.map(image => (
+                    {images.map(image => (
+                    <TouchableWithoutFeedback key={image} onPress={handleDoublePress}>
                         <Image
                         testID='image' 
-                        key={image.id}
-                        style={styles.image}
-                        source={{uri: image.uri}} />
+                        style={{width: width, height: "100%", }}
+                        source={{uri: image}} />
+                    </TouchableWithoutFeedback>
 
                     ))}
-                </Swiper>
+                </Swiper>}
+            <View style={styles.iconContainer}>
+                <View style={{flexDirection: 'row', alignItems: 'center', flex: 1/3}}>
+                    <Ionicons 
+                        name={isLiked ? "heart" : "heart-outline"} 
+                        size={27} 
+                        color={isLiked ? "#C80710" : "white"} 
+                        onPress={() => setIsLiked(x => !x)}
+                    />
+                    <CustomText style={{fontSize: 11, marginLeft: 5, marginTop: 5}}>{likes}</CustomText>
+                </View>
+                <View style={{flex: 1/3, alignItems: 'center'}}>
+                    <View style={{borderWidth: 1, borderColor: 'white', width: 26, height: 26, borderRadius: 14.5, justifyContent: 'center', alignItems: 'center'}}>
+                        <FontAwesome name="dollar" size={19} color="white" />
+                    </View>
+                </View>
+                <View style={{flex: 1/3, alignItems: 'flex-end'}}>
+                    <Ionicons name="bookmarks-outline" size={24} color="white" />
+                </View>
             </View>
-            {description &&
-            <View style={styles.description}>
-                <CustomText>{description}</CustomText>
-            </View>}
-            </BlurView>
+            <Divider style={{marginBottom: 5, marginTop: 5}} width={0.3} color={"#262527"} />
         </View>
-        {!blurred &&
-        <View style={styles.iconContainer} testID="iconcontainer">
-            <Ionicons name="heart-outline" size={24} color="white" style={{marginBottom: 15}}/>
-            <Entypo name="share" size={24} color="white" />
-        </View>}
         {
             blurred && 
                 <BlurView 
@@ -89,51 +119,48 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred }) => 
 
 const styles = StyleSheet.create({
     mainContainer: {
-       flexDirection: 'row',
-        margin: 10,
+        flex: 1,
+        flexDirection: 'row',
         alignItems: "flex-end",
         overflow: "hidden",
-        padding: 3,
+        marginBottom: 10
     },
    container: {
-    borderRadius: 15,
-    width: "90%",
     overflow:"hidden",
+    flex: 1
+   },
+   header: {
+    padding: 3
+   },
+   profilInfos: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
    },
    dotStyle: {
     width: 5,
     height: 5,
    },
    imagesContainer: {
-    height: 300,
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
     overflow: 'hidden',
-    padding: 2
+    backgroundColor: 'pink',
+    flex: 1,
    },
    description: {
     height: 'auto',
     padding: 10
    },
-   image: {
-    width: "100%",
-    height: "100%",
-   },
    iconContainer: {
-    justifyContent: "flex-end",
-    width: "10%",
-    height: 100,
-    padding: 5,
-    borderBottomWidth: 1,
-    borderColor: "white"
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
    },
    blurView: {
     position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
-    right: "10%",
-    borderRadius: 15,
+    right: 0,
     overflow: "hidden"
    },
    overlayContainer: {
