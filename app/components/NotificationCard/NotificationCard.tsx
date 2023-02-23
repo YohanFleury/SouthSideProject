@@ -21,16 +21,16 @@ const NotificationCard = ({ content, time, onPress, onPressAvatar, source }: Not
             <View>
                 <View style={styles.container}>
                     <View style={styles.avatar}>
-                        <ProfilPicture size={65} source={source} onPress={onPressAvatar} />
+                        <ProfilPicture size={40} source={source} onPress={onPressAvatar} />
                     </View>
                     <View style={styles.content}>
-                        <CustomText>{content}</CustomText>
-                    </View>
-                    <View style={styles.time}>
-                        <CustomText style={styles.timeText}>{time}</CustomText>
+                        <CustomText style={{fontSize: 16}}>{content}</CustomText>
                     </View>
                 </View>
+                <View style={{paddingHorizontal: 20}}>
+                
                 <Divider />
+                </View>
             </View>
         </TouchableWithoutFeedback>
     )
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         padding: 10,
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'space-evenly'
     },
     avatar: {

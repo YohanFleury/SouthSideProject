@@ -8,25 +8,25 @@ import colors from '../../config/colors';
 const notifications = [
     {
         id: 1,
-        notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
+        notifContent: "New post !",
         notifTime: "6h",
         avatarSource: 'https://randomuser.me/api/portraits/men/2.jpg',
     },
     {
         id: 2,
-        notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
+        notifContent: "Avatars are found all over ui design from lists to profile screens.",
         notifTime: "10h",
         avatarSource: 'https://randomuser.me/api/portraits/men/6.jpg',
     },
     {
         id: 3,
-        notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
+        notifContent: "They are commonly used to represent",
         notifTime: "11h",
         avatarSource: 'https://randomuser.me/api/portraits/men/21.jpg',
     },
     {
         id: 4,
-        notifContent: "Avatars are found all over ui design from lists to profile screens. They are commonly used to represent",
+        notifContent: "Avatars to profile screens. They are commonly used to represent",
         notifTime: "17h",
         avatarSource: 'https://randomuser.me/api/portraits/men/22.jpg',
     },

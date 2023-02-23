@@ -14,7 +14,7 @@ import CustomScreen from '../../components/CustomScreen/CustomScreen';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CustomText from '../../components/CustomText/CustomText';
-import { addImagesPost, deleteImageUri, resetImagesUris, setOpenNewPostModal } from '../../redux/userTestSlice';
+import { addImagesPost, createPost, deleteImageUri, resetImagesUris, setOpenNewPostModal } from '../../redux/userTestSlice';
 import ParamsModal from '../../components/ParamsModal/ParamsModal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import routes from '../../navigation/routes';
@@ -25,25 +25,22 @@ const NewPostScreen = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<HomeNavigatorParams>>()
     const navigationState = useNavigationState(state => state)
-    console.log(navigationState)
+
     const dispatch = useAppDispatch()
     const imagesSelected = useAppSelector((state) => state.users.imagesPost)
     const visible = useAppSelector((state) => state.users.openNewPostModal)
 
     const [inputValue, setInputValue] = useState<string>('')
-    const [openModal, setOpenModal] = useState<boolean>(false)
     const [paramsModalVisible, setParamsModalVisible] = useState<boolean>()
     const [isPrivate, setIsPrivate] = useState<boolean>(false)
-
+    
     useEffect(() => {
       dispatch(resetImagesUris())
     }, []) 
     
     useLayoutEffect(() => {
-        
         setParamsModalVisible(true)
     }, [])
-    
 
     const onSelectImage = async () => {
         const {granted} = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -56,10 +53,7 @@ const NewPostScreen = () => {
                 videoQuality: 1,
             })
             if (!result.canceled) {
-                result.assets.map(image => dispatch(addImagesPost({
-                    assetId: image.assetId,
-                    uri: image.uri
-                })))
+                result.assets.map(image => dispatch(addImagesPost(image.uri)))
             }
         } catch (error) {
             console.log('error selected image',error)
@@ -82,11 +76,19 @@ const NewPostScreen = () => {
     }
 
     const handlePost = () => {
-        console.log('Post : ', {
-            text: inputValue,
-            images: imagesSelected
-        })
-        setOpenModal(false)
+        dispatch(createPost({
+            authorId: Math.floor(Math.random() * 1000),
+            name: "Elon Musk",
+            username: "elonSpaceX",
+            description: inputValue,
+            category: "Business",
+            images: imagesSelected,
+            likes: Math.floor(Math.random() * 1000)
+        }))
+        dispatch(setOpenNewPostModal(false))
+        dispatch(resetImagesUris())
+        setInputValue('')
+        navigation.navigate(routes.HOME)
     }
 
     const inputRef = useRef<TextInput>(null);
@@ -120,13 +122,14 @@ const NewPostScreen = () => {
                             <View style={styles.header}>
                                 <Button title='Annuler' onPress={() => {
                                     dispatch(setOpenNewPostModal(false))
+                                    setInputValue('')
                                     navigation.navigate(routes.HOME)
                                     }} color={colors.white} />
                                 {inputValue.length > 0 &&
                                 <Button 
                                 color={colors.white} 
                                 title='Poster' 
-                                onPress={() => console.log('POST')}  />}
+                                onPress={handlePost}  />}
                             </View>
                             <View style={{marginTop: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <View style={styles.user}>
@@ -176,16 +179,16 @@ const NewPostScreen = () => {
                                 showsHorizontalScrollIndicator={false}
                                 style={{width: '50%',}}
                                 data={imagesSelected}
-                                keyExtractor={image => image.assetId}
+                                keyExtractor={image => image}
                                 renderItem={({ item }) => {
                                     return (
-                                        <View key={item.assetId}>  
+                                        <View key={item}>  
                                         <TouchableWithoutFeedback onPress={() => dispatch(deleteImageUri(item.uri))}>
                                             <View style={styles.pastille}>
                                                 <AntDesign name="close" size={12} color={colors.white} />
                                             </View>
                                         </TouchableWithoutFeedback>
-                                        <Image source={{uri: item.uri}} style={{width: 80, height: 80, borderRadius: 15, margin: 5, marginRight: 10}} />
+                                        <Image source={{uri: item}} style={{width: 80, height: 80, borderRadius: 15, margin: 5, marginRight: 10}} />
                                     </View>
                                 )}}
                                 />
