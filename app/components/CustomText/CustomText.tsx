@@ -21,7 +21,7 @@ const CustomText:React.FC<TextProp> = ({children, style}) => {
 
 const styles = StyleSheet.create({
    police: {
-    fontSize: 20
+    fontSize: 17
    }
 })
 

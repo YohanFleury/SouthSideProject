@@ -4,7 +4,7 @@ import colors from '../../config/colors';
 import { useAppSelector } from '../../redux/store'
 
 interface Props {
-  value?: string;
+  value?: string ;
   onChangeText: (text: string) => void;
   placeholder?: string;
   returnKeyType?: 'next' | 'done' | 'search';

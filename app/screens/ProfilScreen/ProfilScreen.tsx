@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Text, Button, ScrollView,  } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import { Feather } from '@expo/vector-icons';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { ResearchRoutesParams} from '../../navigation/ResearchNavigator/ResearchNavigator'
+import { BottomSheetModal} from '@gorhom/bottom-sheet';
 
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CoverPicture from '../../components/CoverPicture/CoverPicture';
@@ -17,21 +18,50 @@ import colors from '../../config/colors';
 import CustomScreen from '../../components/CustomScreen/CustomScreen' 
 import BackButton from '../../components/BackButton/BackButton';
 import PostCard from '../../components/PostCard/PostCard';
+import LiveScreen from '../LivesScreen/LiveScreen';
+import FullScreenImage from '../../components/FullscreenImages/FullscreenImages';
+import TipsModal from '../../components/TipsModal/TipsModal';
 
 
 type ProfilScreenRouteProp = RouteProp<ResearchRoutesParams, 'Profil'>;
+
+const imageURIs = [
+    "https://picsum.photos/600/900?random=1",
+    "https://picsum.photos/600/900?random=2",
+    "https://picsum.photos/600/900?random=3",
+    "https://picsum.photos/600/900?random=4",
+    "https://picsum.photos/600/900?random=5",
+    "https://picsum.photos/600/900?random=6",
+    "https://picsum.photos/600/900?random=7",
+    "https://picsum.photos/600/900?random=8",
+    "https://picsum.photos/600/900?random=9",
+    "https://picsum.photos/600/900?random=10",
+    "https://picsum.photos/600/900?random=11",
+    "https://picsum.photos/600/900?random=12",
+    "https://picsum.photos/600/900?random=13",
+    "https://picsum.photos/600/900?random=14",
+    "https://picsum.photos/600/900?random=15",
+    "https://picsum.photos/600/900?random=16",
+    "https://picsum.photos/600/900?random=17",
+    "https://picsum.photos/600/900?random=18",
+    "https://picsum.photos/600/900?random=19",
+    "https://picsum.photos/600/900?random=20",
+  ];
 
 const ProfilScreen = () => {
 
     const route = useRoute<ProfilScreenRouteProp>()
     const { id, name, username, description, profilPicture, isCertified } = route.params;
-    console.log('pp', profilPicture)
+    
+    const [contentType, setContentType] = useState<string>('posts')
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     return (
+        <>
         <CustomScreen>
         <View style={styles.BackButton}>
             <BackButton />
         </View>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.mainContainer}>
                     <View style={[styles.ppContainer, {width: 80+10, height: 80+10, borderRadius: (80+10)/2}]}>
                         <ProfilPicture size={80} source={profilPicture} />
@@ -63,27 +93,60 @@ const ProfilScreen = () => {
             <View style={{padding: 15, alignItems: 'center'}}>
                 <CustomButton title="Subscribe" onPress={() => console.log("S'abonner")} style={{width: "60%"}} />
             </View>
-            <Divider width={2} color={colors.lightGrey} />
             <View style={styles.secondContainer}>
-                <View style={styles.buttonsContainer}>
-                    <Button title="Posts" color={colors.dark.primary} onPress={() => null} />
-                    <View style={{ width: 1, height: '30%', backgroundColor: colors.lightGrey}} />
-                    <Button title="Medias" color={colors.medium} onPress={() => console.log('Photo button pressed')} />
-                    <View style={{ width: 1, height: '30%', backgroundColor: colors.lightGrey}} />
-                    <Button title="Lives" color={colors.medium} onPress={() => null} />
+                <View testID='btnView' style={styles.buttonsContainer}>
+                    <View>
+                        <Button 
+                            title="Posts" 
+                            color={contentType === "posts" ? colors.dark.primary : colors.white} 
+                            onPress={() => setContentType('posts')} 
+                        />
+                        {contentType === "posts" &&
+                        <View style={{borderWidth: 0.9, borderColor: colors.dark.primary, }} />}
+                    </View>
+                    <View>
+                        <Button 
+                            title="Medias" 
+                            color={contentType === "medias" ? colors.dark.primary : colors.white} 
+                            onPress={() => setContentType('medias')} 
+                        />
+                        {contentType === "medias" &&
+                        <View style={{borderWidth: 0.9, borderColor: colors.dark.primary, }} />}
+                    </View>
+                    <View>
+                        <Button 
+                            title="Lives" 
+                            color={contentType === "lives" ? colors.dark.primary : colors.white} 
+                            onPress={() => setContentType('lives')}
+                        />
+                        {contentType === "lives" &&
+                        <View style={{borderWidth: 0.7, borderColor: colors.dark.primary, }} />}
+                    </View>
                 </View>
-                <View style={{width: '90%', alignSelf: 'center', marginTop: 8}}>
-                    <Divider />
+                <View style={{width: '90%', alignSelf: 'center', marginTop: 8, marginBottom: 10}}>
+                    
                 </View>
             </View>
-            <PostCard blurred={false} description={description} />
-            <PostCard blurred={false} description={description} />
-            <PostCard blurred={false} description={description} />
-            <PostCard blurred description={description} />
-            <PostCard blurred={false} description={description} />
-            <PostCard blurred={true} description={description} />
+            <View>
+                {contentType === "posts" &&
+                <>
+                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
+                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
+                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={true} description={description} />
+                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
+                </>
+                }
+                {contentType === "medias" &&
+                <FullScreenImage images={imageURIs} />
+                }
+                {contentType === "lives" &&
+                <LiveScreen />
+                }
+            </View>
         </ScrollView>
     </CustomScreen>
+        <TipsModal tipsModalRef={bottomSheetModalRef} />
+        </>
 )
 }
 const styles = StyleSheet.create({
@@ -101,8 +164,9 @@ const styles = StyleSheet.create({
     
     buttonsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10
     },
 
 

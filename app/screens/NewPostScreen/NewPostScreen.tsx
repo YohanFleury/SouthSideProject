@@ -15,7 +15,6 @@ import CustomButton from '../../components/CustomButton/CustomButton';
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CustomText from '../../components/CustomText/CustomText';
 import { addImagesPost, createPost, deleteImageUri, resetImagesUris, setOpenNewPostModal } from '../../redux/userTestSlice';
-import ParamsModal from '../../components/ParamsModal/ParamsModal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import routes from '../../navigation/routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -33,7 +32,7 @@ const NewPostScreen = () => {
     const [inputValue, setInputValue] = useState<string>('')
     const [paramsModalVisible, setParamsModalVisible] = useState<boolean>()
     const [isPrivate, setIsPrivate] = useState<boolean>(false)
-    
+
     useEffect(() => {
       dispatch(resetImagesUris())
     }, []) 

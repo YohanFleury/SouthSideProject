@@ -27,9 +27,9 @@ const NotificationCard = ({ content, time, onPress, onPressAvatar, source }: Not
                         <CustomText style={{fontSize: 16}}>{content}</CustomText>
                     </View>
                 </View>
-                <View style={{paddingHorizontal: 20}}>
+                <View style={{paddingHorizontal: 15}}>
                 
-                <Divider />
+                <Divider width={0.5} color={colors.medium} />
                 </View>
             </View>
         </TouchableWithoutFeedback>
