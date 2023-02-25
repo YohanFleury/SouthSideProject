@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, StyleSheet, Image, useWindowDimensions} from 'react-native'
 import { FontAwesome5, Entypo, Ionicons, MaterialIcons, Foundation, FontAwesome } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur'
 import Swiper from 'react-native-swiper';
+import { BottomSheetModal} from '@gorhom/bottom-sheet';
+
 
 import CustomText from '../CustomText/CustomText';
 import ProfilPicture from '../ProfilPicture/ProfilPicture';
 import colors from '../../config/colors';
 import { Divider } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-
+import TipsModal from '../TipsModal/TipsModal';
+import PostOptionsModal from '../PostOptionsModal/PostOptionsModal';
 
 interface PostCardProps {
     description?: string;
@@ -18,16 +21,19 @@ interface PostCardProps {
     likes: number;
     username: string;
     name: string;
+    onTipsPress: () => void;
 }
 
 const DOUBLE_PRESS_DELAY = 300;
 
-const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, username, name, likes }) => {
+const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, username, name, likes, onTipsPress }) => {
     const {width, height} = useWindowDimensions()
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const [isSignet, setIsSignet] = useState<boolean>(false)
     const [lastPress, setLastPress] = useState(0);
     
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
 
     const handleDoublePress = () => {
       const time = new Date().getTime();
@@ -39,8 +45,11 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
       setLastPress(time);
     };
 
+
+
    return (
        <View style={styles.mainContainer}>
+        <PostOptionsModal tipsModalRef={bottomSheetModalRef} />
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.profilInfos}>
@@ -52,7 +61,7 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
                         </View>
                     </View>
                     <View>
-                        <MaterialIcons name="more-horiz" size={24} color="white" />
+                        <MaterialIcons name="more-horiz" size={24} color="white" onPress={() => bottomSheetModalRef.current?.present()} />
                     </View>
                 </View>
                 {description &&
@@ -69,6 +78,7 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
                     dotStyle={styles.dotStyle}
                     activeDotColor='white'
                     activeDotStyle={styles.dotStyle}
+                    style={{height: 400}}
                 >
                     {images.map(image => (
                     <TouchableWithoutFeedback key={image} onPress={handleDoublePress}>
@@ -91,9 +101,9 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
                     <CustomText style={{fontSize: 11, marginLeft: 5, marginTop: 5}}>{likes}</CustomText>
                 </View>
                 <View style={{flex: 1/3, alignItems: 'center'}}>
-                    <View style={{borderWidth: 1, borderColor: 'white', width: 26, height: 26, borderRadius: 14.5, justifyContent: 'center', alignItems: 'center'}}>
+                    <TouchableWithoutFeedback onPress={onTipsPress} style={{borderWidth: 1, borderColor: 'white', width: 26, height: 26, borderRadius: 13, justifyContent: 'center', alignItems: 'center'}}>
                         <FontAwesome name="dollar" size={19} color="white" />
-                    </View>
+                    </TouchableWithoutFeedback>
                 </View>
                 <View style={{flex: 1/3, alignItems: 'flex-end'}}>
                     <Ionicons name="bookmarks-outline" size={24} color="white" />
@@ -161,7 +171,8 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    overflow: "hidden"
+    overflow: "hidden",
+    borderRadius: 25
    },
    overlayContainer: {
     flex: 1,

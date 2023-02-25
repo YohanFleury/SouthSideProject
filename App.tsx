@@ -6,6 +6,7 @@ import CustomScreen from './app/components/CustomScreen/CustomScreen';
 import PostCard from './app/components/PostCard/PostCard';
 import { GestureHandlerRootView, gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import BottomSheet, {BottomSheetModalProvider, BottomSheetModal} from '@gorhom/bottom-sheet';
+import {PortalProvider} from '@gorhom/portal'
 
 import { Provider } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native';
@@ -38,13 +39,14 @@ const App = () => {
   }
 
   return (
-  <BottomSheetModalProvider>
+    
     <NavigationContainer>
       <Provider store={store}>
-        {currentUser ? <DrawerNavigator /> : <AuthNavigator />}
+        <PortalProvider>
+          {currentUser ? <DrawerNavigator /> : <AuthNavigator />}
+        </PortalProvider>
       </Provider>
       </NavigationContainer>
-  </BottomSheetModalProvider>
   );
 }
 

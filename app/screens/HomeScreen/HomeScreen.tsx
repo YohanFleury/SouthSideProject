@@ -4,12 +4,14 @@ import CustomScreen from '../../components/CustomScreen/CustomScreen';
 import { useAppSelector } from '../../redux/store';
 import PostCard from '../../components/PostCard/PostCard';
 import { useScrollToTop } from '@react-navigation/native';
-
+import BottomSheet, {BottomSheetModalProvider, BottomSheetModal} from '@gorhom/bottom-sheet';
+import TipsModal from '../../components/TipsModal/TipsModal';
 
 const HomeScreen = () => {
   const [postsList, setPostsList] = useState<any>()
   const reduxPostList = useAppSelector(state => state.users.postsList)
   const ref = React.useRef(null)
+  const bottomSheetModalRef = React.useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     setPostsList(reduxPostList)
@@ -31,9 +33,12 @@ const HomeScreen = () => {
             likes={item.likes}
             description={item.description}
             images={item.images}
+            onTipsPress={() => bottomSheetModalRef.current?.present()}
             />
           )}
-        />
+        />        
+        <TipsModal tipsModalRef={bottomSheetModalRef} />
+
       </CustomScreen>
   );
 };
