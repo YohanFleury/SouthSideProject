@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
 
-import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import CustomScreen from './app/components/CustomScreen/CustomScreen';
-import PostCard from './app/components/PostCard/PostCard';
-import { GestureHandlerRootView, gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import BottomSheet, {BottomSheetModalProvider, BottomSheetModal} from '@gorhom/bottom-sheet';
+import { StyleSheet,} from 'react-native';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import {PortalProvider} from '@gorhom/portal'
 
 import { Provider } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native';
 import { store } from './app/redux/store'
 
-import AppNavigator from './app/navigation/AppNavigator/AppNavigator'
 import DrawerNavigator from './app/navigation/DrawerNavigator/DrawerNavigator';
 // Auth
 import { auth } from './config/firebase'

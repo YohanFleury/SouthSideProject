@@ -19,17 +19,13 @@ const GoBackBtn = () => {
 
 const styles = StyleSheet.create({
    container: {
-    backgroundColor: '#2A293B',
+    backgroundColor: 'black',
     width: 30,
     height: 30,
     borderRadius: 15,
-    opacity: 0.7,
+    opacity: 0.4,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    zIndex: 1
    }
 })
 

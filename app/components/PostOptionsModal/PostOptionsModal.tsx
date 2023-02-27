@@ -44,6 +44,7 @@ const PostOptionsModal: React.FC<TipsModalProps> = ({ tipsModalRef }) => {
     <Portal>
     <BottomSheetModalProvider>
         <BottomSheetModal
+        
         ref={tipsModalRef}
         index={0}
         backdropComponent={renderBackdrop}

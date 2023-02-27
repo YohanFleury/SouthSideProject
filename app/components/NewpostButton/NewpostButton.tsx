@@ -11,7 +11,7 @@ type npBtn = {
 const NewpostButton: React.FC<npBtn> = ({ onPress }) => {
     return (
           <TouchableHighlight onPress={onPress} style={styles.sousContainer}>
-          <MaterialCommunityIcons name="plus-circle" size={27} color={colors.white} />
+          <MaterialCommunityIcons name="plus-circle" size={27} color={colors.dark.primary} />
           </TouchableHighlight>
      )
 }
@@ -27,13 +27,12 @@ const styles = StyleSheet.create({
      },
      sousContainer: {
         borderWidth: 1,
-        borderColor: colors.white,
+        borderColor: colors.medium,
         height: 40,
         width: 40,
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.dark.background
  
     }
  })

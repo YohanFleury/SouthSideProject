@@ -13,6 +13,7 @@ import { Divider } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import TipsModal from '../TipsModal/TipsModal';
 import PostOptionsModal from '../PostOptionsModal/PostOptionsModal';
+import UnlockModal from '../UnlockModal/UnlockModal';
 
 interface PostCardProps {
     description?: string;
@@ -33,6 +34,7 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
     const [lastPress, setLastPress] = useState(0);
     
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const unlockModalRef = useRef<BottomSheetModal>(null);
 
 
     const handleDoublePress = () => {
@@ -50,6 +52,7 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
    return (
        <View style={styles.mainContainer}>
         <PostOptionsModal tipsModalRef={bottomSheetModalRef} />
+        <UnlockModal unlockModalRef={unlockModalRef} />
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.profilInfos}>
@@ -117,9 +120,13 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
                     intensity={70} 
                     tint="default" 
                     testID='blurview'
-                    style={styles.blurView}>    
+                    style={styles.blurView}
+                    
+                    >    
                     <View style={styles.overlayContainer}>
-                        <FontAwesome5 name="lock" size={44} color="white" />
+                        <TouchableWithoutFeedback onPress={() => unlockModalRef.current?.present()} style={styles.lockView}>
+                            <FontAwesome5 name="lock" size={34} color={colors.dark.primary} />
+                        </TouchableWithoutFeedback>
                     </View>
                 </BlurView>
         }
@@ -133,7 +140,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "flex-end",
         overflow: "hidden",
-        marginBottom: 10
+        marginBottom: 10,
+        paddingVertical: 10
     },
    container: {
     overflow:"hidden",
@@ -179,6 +187,16 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center'
+   },
+   lockView: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 1,
+    borderColor: colors.dark.primary,
+    backgroundColor: colors.dark.background,
+    alignItems: 'center',
+    justifyContent: 'center'
    }
 })
 

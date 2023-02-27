@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {MaterialCommunityIcons, Fontisto, Octicons, FontAwesome, Ionicons } from '@expo/vector-icons'
@@ -25,6 +25,7 @@ import NewpostButton from '../../components/NewpostButton/NewpostButton';
 import { useAppDispatch } from '../../redux/store';
 import { setOpenNewPostModal } from '../../redux/userTestSlice';
 import { View } from 'react-native';
+import { BlurView } from 'expo-blur';
 
 const Tab = createBottomTabNavigator()
 
@@ -35,16 +36,29 @@ const AppNavigator = () => {
     const dispatch = useAppDispatch()
 
     return (
-        <Tab.Navigator screenOptions={({ route }) => ({
+        <Tab.Navigator tabBar={(props) => (
+          <BlurView
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+            tint="dark"
+            intensity={100}
+          >
+            <BottomTabBar {...props} />
+          </BlurView>
+        )} screenOptions={({ route }) => ({
             tabBarIcon: ({ focused }) => {
               if (route.name === routes.HOMENAVIGATOR) {
-                  return <MaterialCommunityIcons onPress={() => navigation.navigate(routes.HOME)} name={focused ? 'home' : 'home-outline'} color={focused ? colors.dark.primary : colors.white} size={27} />
+                  return <MaterialCommunityIcons onPress={() => navigation.navigate(routes.HOME)} name={focused ? 'home' : 'home-outline'} color={focused ? colors.white : colors.medium} size={29} />
               } else if (route.name === routes.RESEARCHNAVIGATOR) {
-                return <Octicons name="search" size={23} color={focused ? colors.dark.primary : colors.white} />
+                return <Octicons name="search" size={23} color={focused ? colors.white : colors.medium} />
               } else if (route.name === routes.NOTIFICATIONS) {
-               return <Fontisto style={{marginBottom: 4}} name={focused ? "bell-alt" : "bell"} size={21} color={focused ? colors.dark.primary : colors.white} />
+               return <Fontisto style={{marginBottom: 4}} name={focused ? "bell-alt" : "bell"} size={23} color={focused ? colors.white : colors.medium} />
               } else if (route.name === routes.CHAT) {
-               return  <MaterialCommunityIcons name="treasure-chest" color={focused ? colors.dark.primary : colors.white} size={26} />
+               return  <MaterialCommunityIcons name="treasure-chest" color={focused ? colors.white : colors.medium} size={26} />
               } else return <NewpostButton onPress={() => {
                 dispatch(setOpenNewPostModal(true))
                 navigation.navigate(routes.NEWPOST)
@@ -52,7 +66,9 @@ const AppNavigator = () => {
             },
             tabBarLabel:() => {return null},
             fullScreenGestureEnabled: true,
-            tabBarStyle: {backgroundColor: colors.dark.background}
+            tabBarStyle: {backgroundColor: 'transparent', height: 80, borderTopWidth: 0, paddingTop: 10
+             },
+             
           })}>
             <Tab.Screen name={routes.HOMENAVIGATOR} component={HomeNavigator} options={{headerShown: false,}}  />
             <Tab.Screen name={routes.RESEARCHNAVIGATOR} component={ResearchNavigator} options={{headerShown: false}} />

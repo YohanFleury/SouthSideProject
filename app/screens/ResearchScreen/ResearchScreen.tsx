@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Keyboard, Pressable, Button } from 'react-native'
+import { View, StyleSheet, Keyboard, Pressable, Button, ScrollView } from 'react-native'
 import { Octicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -79,32 +79,35 @@ const ResearchScreen = () => {
 
    return (
       <CustomScreen>
-        <View style={styles.header}>
-            <View style={{width:"80%"}}>
-            <CustomInput 
-                placeholder='Rechercher un utilisateur' 
-                onChangeText={(e) => setTextSearch(e)} 
-                returnKeyType="search"
-                onSubmitEditing={onCancel}
-                width="90%"
-                value={textSearch}
-                onFocus={() => setFocus(true)}
-            />
-            </View>
-            {focus &&
-            <Pressable onPress={onCancel}>
-                <CustomText>Annuler</CustomText>
-            </Pressable>}
+        <ScrollView>
+
+            <View style={styles.header}>
+                <View style={{width:"80%"}}>
+                <CustomInput 
+                    placeholder='Rechercher un utilisateur' 
+                    onChangeText={(e) => setTextSearch(e)} 
+                    returnKeyType="search"
+                    onSubmitEditing={onCancel}
+                    width="90%"
+                    value={textSearch}
+                    onFocus={() => setFocus(true)}
+                />
+                </View>
+                {focus &&
+                <Pressable onPress={onCancel}>
+                    <CustomText>Annuler</CustomText>
+                </Pressable>}
+                {!focus &&
+                <Octicons name="filter" size={24} color="white" />
+                }
+            </View>   
+            {focus && textSearch.length > 0 &&
+            <ResearchResults data={users} />}
             {!focus &&
-            <Octicons name="filter" size={24} color="white" />
-            }
-        </View>   
-        {focus && textSearch.length > 0 &&
-        <ResearchResults data={users} />}
-        {!focus &&
-        <MySubs title='Mes abonnements' data={dataSub} />}
-        {!focus &&
-        <MySubs title='Cela pourrait vous intéresser' data={users} />}
+            <MySubs title='Mes abonnements' data={dataSub} />}
+            {!focus &&
+            <MySubs title='Cela pourrait vous intéresser' data={users} />}
+        </ScrollView>
       </CustomScreen>
    )
 }
