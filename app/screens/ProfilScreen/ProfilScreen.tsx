@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Text, Button, ScrollView,  } from 'react-native'
+import { View, StyleSheet, Text, Button, ScrollView, NativeSyntheticEvent, NativeScrollEvent, Dimensions, StatusBar } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Divider } from 'react-native-elements'
@@ -9,18 +9,18 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { ResearchRoutesParams} from '../../navigation/ResearchNavigator/ResearchNavigator'
 import { BottomSheetModal} from '@gorhom/bottom-sheet';
+import Constants from 'expo-constants';
+import { BlurView } from 'expo-blur';
 
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CoverPicture from '../../components/CoverPicture/CoverPicture';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import CustomText from '../../components/CustomText/CustomText';
 import colors from '../../config/colors';
-import CustomScreen from '../../components/CustomScreen/CustomScreen' 
-import BackButton from '../../components/BackButton/BackButton';
 import PostCard from '../../components/PostCard/PostCard';
-import LiveScreen from '../LivesScreen/LiveScreen';
 import FullScreenImage from '../../components/FullscreenImages/FullscreenImages';
 import TipsModal from '../../components/TipsModal/TipsModal';
+import GoBackBtn from '../../components/BackButton/BackButton';
 
 
 type ProfilScreenRouteProp = RouteProp<ResearchRoutesParams, 'Profil'>;
@@ -54,14 +54,39 @@ const ProfilScreen = () => {
     const { id, name, username, description, profilPicture, isCertified } = route.params;
     
     const [contentType, setContentType] = useState<string>('posts')
+    const [showBackButton, setShowBackButton] = useState<boolean>(false);
+    const [previousOffset, setPreviousOffset] = useState<number>(0)
+    const [subscribeButtonVisible, setSubscribeButtonVisible] = useState(true);
+
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const buttonRef = useRef<View>(null);
+
+    const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        const { contentOffset } = event.nativeEvent;
+        //Goback button apparaît que si le user scroll vers le haut
+        const show = contentOffset.y < previousOffset;
+        setShowBackButton(show);
+        setPreviousOffset(contentOffset.y)
+
+        //Detecte si le bouton subscribe est visible 
+        buttonRef.current?.measure((x, y, width, height, pageX, pageY) => {
+            setSubscribeButtonVisible(pageY > (-10));
+          });
+    };
+
     return (
-        <>
-        <CustomScreen>
-        <View style={styles.BackButton}>
-            <BackButton />
-        </View>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        
+        <View style={[
+            styles.grandeContainor, 
+            {paddingTop: subscribeButtonVisible ? Constants.statusBarHeight : 0
+        }]}>
+        <View style={styles.testDeOuf} />
+        <ScrollView 
+            stickyHeaderIndices={[2]} 
+            showsVerticalScrollIndicator={false}
+            onScroll={handleScroll}
+            scrollEventThrottle={20}
+            >
             <View style={styles.mainContainer}>
                     <View style={[styles.ppContainer, {width: 80+10, height: 80+10, borderRadius: (80+10)/2}]}>
                         <ProfilPicture size={80} source={profilPicture} />
@@ -90,48 +115,102 @@ const ProfilScreen = () => {
                     </View>
                 </View>
             </View>
-            <View style={{padding: 15, alignItems: 'center'}}>
+            <View ref={buttonRef} style={{padding: 15, alignItems: 'center'}}>
                 <CustomButton title="Subscribe" onPress={() => console.log("S'abonner")} style={{width: "60%"}} />
             </View>
-            <View style={styles.secondContainer}>
-                <View testID='btnView' style={styles.buttonsContainer}>
-                    <View>
-                        <Button 
-                            title="Posts" 
-                            color={contentType === "posts" ? colors.dark.primary : colors.white} 
-                            onPress={() => setContentType('posts')} 
-                        />
-                        {contentType === "posts" &&
-                        <View style={{borderWidth: 0.9, borderColor: colors.dark.primary, }} />}
-                    </View>
-                    <View>
-                        <Button 
-                            title="Medias" 
-                            color={contentType === "medias" ? colors.dark.primary : colors.white} 
-                            onPress={() => setContentType('medias')} 
-                        />
-                        {contentType === "medias" &&
-                        <View style={{borderWidth: 0.9, borderColor: colors.dark.primary, }} />}
-                    </View>
-                    <View>
-                        <Button 
-                            title="Lives" 
-                            color={contentType === "lives" ? colors.dark.primary : colors.white} 
-                            onPress={() => setContentType('lives')}
-                        />
-                        {contentType === "lives" &&
-                        <View style={{borderWidth: 0.7, borderColor: colors.dark.primary, }} />}
+            <View>
+                    {!subscribeButtonVisible &&
+                <View style={[styles.backnsub, ]}>
+                    <BlurView tint='dark' intensity={100}>
+                        <View style={{height: Dimensions.get('window').height / 18}} />
+                        <View style={styles.upContainer}>
+                            <View style={{flex: 1/3, alignItems: 'flex-start'}}>
+                                <GoBackBtn />
+                            </View>
+                            <View style={{flex: 1/3, alignItems: 'center', marginBottom: 5}}>
+                                <ProfilPicture size={35} source={profilPicture}/>
+                            </View>
+                            <View style={{flex: 1/3, alignItems: 'flex-end'}}>
+                                <CustomButton 
+                                    title="Subscribe" 
+                                    onPress={() => console.log("S'abonner")} 
+                                    style={{backgroundColor: 'transparent'}}
+                                    textStyle={{fontSize: 16}}    
+                                />   
+                            </View>
+                        </View>
+                        <View style={styles.secondContainer}>
+                    <View testID='btnView' style={styles.buttonsContainer}>
+                        <View>
+                            <Button 
+                                title="Posts" 
+                                color={contentType === "posts" ? colors.white : colors.medium} 
+                                onPress={() => setContentType('posts')} 
+                            />
+                            {contentType === "posts" &&
+                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 40, alignSelf: 'center' }} />}
+                        </View>
+                        <View>
+                            <Button 
+                                title="Medias" 
+                                color={contentType === "medias" ? colors.white : colors.medium} 
+                                onPress={() => setContentType('medias')} 
+                            />
+                            {contentType === "medias" &&
+                            <View style={{borderWidth: 0.9, borderColor: colors.dark.primary, }} />}
+                        </View>
+                        <View>
+                            <Button 
+                                title="Lives" 
+                                color={contentType === "lives" ? colors.white : colors.medium} 
+                                onPress={() => setContentType('lives')}
+                            />
+                            {contentType === "lives" &&
+                            <View style={{borderWidth: 0.7, borderColor: colors.dark.primary, }} />}
+                        </View>
                     </View>
                 </View>
-                <View style={{width: '90%', alignSelf: 'center', marginTop: 8, marginBottom: 10}}>
-                    
-                </View>
+                    </BlurView>
+                </View>}
+                {subscribeButtonVisible &&
+                <View style={styles.secondContainer}>
+                    <View testID='btnView' style={styles.buttonsContainer}>
+                        <View>
+                            <Button 
+                                title="Posts" 
+                                color={contentType === "posts" ? colors.white : colors.medium} 
+                                onPress={() => setContentType('posts')} 
+                            />
+                            {contentType === "posts" &&
+                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 40, alignSelf: 'center' }} />}
+                        </View>
+                        <View>
+                            <Button 
+                                title="Medias" 
+                                color={contentType === "medias" ? colors.white : colors.medium} 
+                                onPress={() => setContentType('medias')} 
+                            />
+                            {contentType === "medias" &&
+                            <View style={{borderWidth: 0.9, borderColor: colors.dark.primary, }} />}
+                        </View>
+                        <View>
+                            <Button 
+                                title="Lives" 
+                                color={contentType === "lives" ? colors.white : colors.medium} 
+                                onPress={() => setContentType('lives')}
+                            />
+                            {contentType === "lives" &&
+                            <View style={{borderWidth: 0.7, borderColor: colors.dark.primary, }} />}
+                        </View>
+                    </View>
+                </View>}
+                
             </View>
             <View>
                 {contentType === "posts" &&
                 <>
                     <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
-                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
+                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} username='elonmuskX' name="Elon Musk" likes={32445} description={description} />
                     <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={true} description={description} />
                     <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
                 </>
@@ -140,16 +219,36 @@ const ProfilScreen = () => {
                 <FullScreenImage images={imageURIs} />
                 }
                 {contentType === "lives" &&
-                <LiveScreen />
+                <FullScreenImage images={imageURIs} />
                 }
             </View>
-        </ScrollView>
-    </CustomScreen>
         <TipsModal tipsModalRef={bottomSheetModalRef} />
-        </>
+        </ScrollView>
+        </View>
 )
 }
 const styles = StyleSheet.create({
+    testDeOuf: {
+        flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    position: 'absolute',
+    top: Constants.statusBarHeight, // positionner l'en-tête en haut de l'écran, juste en dessous de la barre d'état
+    left: 0,
+    right: 0,
+    height: 50,
+    },
+    grandeContainor: {
+        flex: 1,
+        backgroundColor: colors.dark.background,
+        paddingBottom: 80// prendre en compte la hauteur de la barre d'état
+    },
+    scrollView: {
+        flex: 1,
+        marginTop: 50, // prendre en compte la hauteur de l'en-tête
+        marginBottom: 50,
+    },
     accountName: {
         textAlign: 'center',
         fontSize: 19,
@@ -161,14 +260,17 @@ const styles = StyleSheet.create({
         marginTop: 15,
         fontSize: 16
     },
-    
+    backnsub: {
+      },
     buttonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 10
+        paddingHorizontal: 10
     },
+    buttonsSelected: {
 
+    },
 
     container2: {
         padding: 10,
@@ -189,7 +291,7 @@ const styles = StyleSheet.create({
 
     BackButton: {
         position: 'absolute',
-        top: 0,
+        top: -20,
         left: 0,
         zIndex: 1,
     },
@@ -207,7 +309,6 @@ const styles = StyleSheet.create({
         padding: 2
     },
     secondContainer: {
-        padding: 5
     },
     test: {
         borderTopRightRadius: 15,
@@ -217,6 +318,12 @@ const styles = StyleSheet.create({
         backgroundColor: colors.lightGrey,
         alignItems: 'center',
         left: "35%",
+    },
+    upContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
     },
     userName: {
         fontSize: 15,

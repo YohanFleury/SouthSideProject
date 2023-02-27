@@ -47,7 +47,8 @@ const MySubs: React.FC<MySubsProps> = ({data, title}) => {
 
 const styles = StyleSheet.create({
    container: {
-    padding: 10
+    padding: 10,
+    marginBottom: 20
    },
    subContainer: {
     marginTop: 10
