@@ -10,7 +10,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { DrawerNavigatorParams } from '../../navigation/DrawerNavigator/DrawerNavigator';
 import CustomText from '../CustomText/CustomText'
 import colors from '../../config/colors';
-import ActivityIndicator from '../ActivityIndicator/ActivityIndicator';
+import ActivityIndicator from '../Indicators/ActivityIndicator/ActivityIndicator';
 import routes from '../../navigation/routes';
 
 const DrawerBody = () => {

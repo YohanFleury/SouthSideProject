@@ -353,7 +353,8 @@ type initialStateProps = {
   currentUser: any[] | null;
   imagesPost: any[];
   openNewPostModal: boolean;
-  postsList: any[]
+  postsList: any[];
+  isSub: boolean;
 }
 
 export const initialState: initialStateProps = {
@@ -361,7 +362,8 @@ export const initialState: initialStateProps = {
     currentUser: null,
     imagesPost: [],
     openNewPostModal: false,
-    postsList: postsList
+    postsList: postsList,
+    isSub: false
 }
 
 export const userTestSLice = createSlice({
@@ -405,6 +407,10 @@ export const userTestSLice = createSlice({
 
       createPost: (state, {payload}) => {
         state.postsList.unshift(payload)
+      },
+
+      setIsSub: (state, {payload}) => {
+        state.isSub = payload
       }
         
     }
@@ -419,8 +425,8 @@ export const {
   deleteImageUri, 
   resetImagesUris,
   setOpenNewPostModal,
-  createPost
-
+  createPost,
+  setIsSub,
 } = userTestSLice.actions
 
 export default userTestSLice.reducer

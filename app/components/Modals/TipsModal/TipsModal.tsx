@@ -3,11 +3,11 @@ import { View, StyleSheet, Pressable, TouchableHighlight } from 'react-native'
 import BottomSheet, {BottomSheetModalProvider, BottomSheetModal, BottomSheetBackdropProps, BottomSheetBackdrop, BottomSheetModalProps} from '@gorhom/bottom-sheet';
 import { AntDesign, MaterialIcons, FontAwesome, MaterialCommunityIcons, Ionicons, Entypo} from '@expo/vector-icons';
 
-import colors from '../../config/colors';
-import CustomText from '../CustomText/CustomText';
+import colors from '../../../config/colors';
+import CustomText from '../../CustomText/CustomText';
 import { Portal } from '@gorhom/portal';
-import CustomInput from '../CustomInput/CustomInput';
-import CustomButton from '../CustomButton/CustomButton';
+import CustomInput from '../../CustomInput/CustomInput';
+import CustomButton from '../../CustomButton/CustomButton';
 
 
 

@@ -12,7 +12,7 @@ import DrawerNavigator from './app/navigation/DrawerNavigator/DrawerNavigator';
 // Auth
 import { auth } from './config/firebase'
 import AuthNavigator from './app/navigation/AuthNavigator/AuthNavigator';
-import ActivityIndicator from './app/components/ActivityIndicator/ActivityIndicator';
+import ActivityIndicator from './app/components/Indicators/ActivityIndicator/ActivityIndicator';
 
 
 const App = () => {

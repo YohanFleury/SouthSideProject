@@ -20,7 +20,7 @@ import CustomButton from '../../components/CustomButton/CustomButton';
 import CustomInput from '../../components/CustomInput/CustomInput';
 import CustomScreen from '../../components/CustomScreen/CustomScreen';
 import CustomText from '../../components/CustomText/CustomText';
-import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndicator'
+import ActivityIndicator from '../../components/Indicators/ActivityIndicator/ActivityIndicator'
 
 interface LoginValues {
   email: string;

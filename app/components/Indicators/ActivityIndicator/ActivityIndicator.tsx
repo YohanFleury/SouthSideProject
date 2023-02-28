@@ -7,12 +7,14 @@ type ActivityIndicatorProps = {
 }
 
 const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({visible = false}) => {
+
+
     if (!visible) return null;
 
    return <LottieView
         autoPlay
         loop
-        source={require('../../assets/animations/loader.json')}
+        source={require('../../../assets/animations/loader.json')}
    />
 }
 
