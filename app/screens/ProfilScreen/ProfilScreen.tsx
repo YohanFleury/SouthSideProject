@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Text, Button, ScrollView, NativeSyntheticEvent, NativeScrollEvent, Dimensions, StatusBar } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons, Octicons } from '@expo/vector-icons';
 import { Divider } from 'react-native-elements'
 import { Fontisto } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import { ResearchRoutesParams} from '../../navigation/ResearchNavigator/Research
 import { BottomSheetModal} from '@gorhom/bottom-sheet';
 import Constants from 'expo-constants';
 import { BlurView } from 'expo-blur';
+import Animated, {SlideInDown, SlideInUp} from 'react-native-reanimated';
 
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CoverPicture from '../../components/CoverPicture/CoverPicture';
@@ -19,8 +20,10 @@ import CustomText from '../../components/CustomText/CustomText';
 import colors from '../../config/colors';
 import PostCard from '../../components/PostCard/PostCard';
 import FullScreenImage from '../../components/FullscreenImages/FullscreenImages';
-import TipsModal from '../../components/TipsModal/TipsModal';
+import TipsModal from '../../components/Modals/TipsModal/TipsModal';
 import GoBackBtn from '../../components/BackButton/BackButton';
+import SubscribeModal from '../../components/Modals/SubscribeModal/SubscribeModal';
+import { useAppSelector } from '../../redux/store';
 
 
 type ProfilScreenRouteProp = RouteProp<ResearchRoutesParams, 'Profil'>;
@@ -46,21 +49,27 @@ const imageURIs = [
     "https://picsum.photos/600/900?random=18",
     "https://picsum.photos/600/900?random=19",
     "https://picsum.photos/600/900?random=20",
-  ];
+];
 
 const ProfilScreen = () => {
-
+    
     const route = useRoute<ProfilScreenRouteProp>()
     const { id, name, username, description, profilPicture, isCertified } = route.params;
-    
+    const isSub = useAppSelector(state => state.users.isSub)
     const [contentType, setContentType] = useState<string>('posts')
     const [showBackButton, setShowBackButton] = useState<boolean>(false);
     const [previousOffset, setPreviousOffset] = useState<number>(0)
     const [subscribeButtonVisible, setSubscribeButtonVisible] = useState(true);
-
+    const [showHeader, setShowHeader] = useState<boolean>(false)
+    
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const subscribeModalRef = useRef<BottomSheetModal>(null);
     const buttonRef = useRef<View>(null);
-
+    const myViewRef = useRef<View>(null);
+    const myOtherViewRef = useRef<View>(null);
+    
+    const screenHeight = Dimensions.get('window').height
+    
     const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
         const { contentOffset } = event.nativeEvent;
         //Goback button apparaît que si le user scroll vers le haut
@@ -70,27 +79,29 @@ const ProfilScreen = () => {
 
         //Detecte si le bouton subscribe est visible 
         buttonRef.current?.measure((x, y, width, height, pageX, pageY) => {
-            setSubscribeButtonVisible(pageY > (-10));
+            setSubscribeButtonVisible(
+                pageY > (-0.0033*screenHeight) ?
+                true : 
+                pageY > (-0.1339*screenHeight) ? 
+                true : 
+                false
+            );
           });
     };
 
     return (
         
-        <View style={[
-            styles.grandeContainor, 
-            {paddingTop: subscribeButtonVisible ? Constants.statusBarHeight : 0
-        }]}>
-        <View style={styles.testDeOuf} />
+        <View style={styles.grandeContainor}>
         <ScrollView 
             stickyHeaderIndices={[2]} 
             showsVerticalScrollIndicator={false}
             onScroll={handleScroll}
             scrollEventThrottle={20}
             >
-            <View style={styles.mainContainer}>
-                    <View style={[styles.ppContainer, {width: 80+10, height: 80+10, borderRadius: (80+10)/2}]}>
-                        <ProfilPicture size={80} source={profilPicture} />
-                    </View>
+            <View style={[styles.mainContainer, {paddingTop: 0.0558*screenHeight}]}>
+                <View style={[styles.ppContainer, {width: 75+10, height: 75+10, borderRadius: (75+10)/2}]}>
+                    <ProfilPicture size={75} source={profilPicture} />
+                </View>
                 <View style={styles.container2}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20}}>
                         <View style={{width: '80%'}}>
@@ -116,12 +127,15 @@ const ProfilScreen = () => {
                 </View>
             </View>
             <View ref={buttonRef} style={{padding: 15, alignItems: 'center'}}>
-                <CustomButton title="Subscribe" onPress={() => console.log("S'abonner")} style={{width: "60%"}} />
+                {!isSub && 
+                <CustomButton title="S'abonner" onPress={() => subscribeModalRef.current?.present()} style={{width: 200, justifyContent: 'center'}} />}
+                {isSub && 
+                <CustomButton title="Abonné" onPress={() => null} style={{backgroundColor: 'transparent', width: 120}} icon={<Ionicons name="ios-checkmark-sharp" size={24} color="white" />} />}
             </View>
-            <View>
+            <View testID='sticky' style={{height: 60 }}>
                     {!subscribeButtonVisible &&
-                <View style={[styles.backnsub, ]}>
-                    <BlurView tint='dark' intensity={100}>
+                <Animated.View  entering={SlideInUp} style={[styles.backnsub, ]}>
+                    <BlurView ref={myViewRef} tint='dark' intensity={100}>
                         <View style={{height: Dimensions.get('window').height / 18}} />
                         <View style={styles.upContainer}>
                             <View style={{flex: 1/3, alignItems: 'flex-start'}}>
@@ -131,12 +145,18 @@ const ProfilScreen = () => {
                                 <ProfilPicture size={35} source={profilPicture}/>
                             </View>
                             <View style={{flex: 1/3, alignItems: 'flex-end'}}>
+                                {!isSub &&
                                 <CustomButton 
                                     title="Subscribe" 
-                                    onPress={() => console.log("S'abonner")} 
+                                    onPress={() => subscribeModalRef.current?.present()} 
                                     style={{backgroundColor: 'transparent'}}
                                     textStyle={{fontSize: 16}}    
-                                />   
+                                /> } 
+                                {isSub && 
+                                <View style={styles.searchIcon}>
+                                    <Octicons name="search" size={20} color="white" />
+                                </View>
+                                } 
                             </View>
                         </View>
                         <View style={styles.secondContainer}>
@@ -171,9 +191,9 @@ const ProfilScreen = () => {
                     </View>
                 </View>
                     </BlurView>
-                </View>}
-                {subscribeButtonVisible &&
-                <View style={styles.secondContainer}>
+                </Animated.View>}
+                </View>
+                <View ref={myOtherViewRef} style={styles.secondContainer}>
                     <View testID='btnView' style={styles.buttonsContainer}>
                         <View>
                             <Button 
@@ -203,15 +223,13 @@ const ProfilScreen = () => {
                             <View style={{borderWidth: 0.7, borderColor: colors.dark.primary, }} />}
                         </View>
                     </View>
-                </View>}
-                
-            </View>
+                </View>
             <View>
                 {contentType === "posts" &&
                 <>
                     <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
                     <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} username='elonmuskX' name="Elon Musk" likes={32445} description={description} />
-                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={true} description={description} />
+                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={!isSub} description={description} />
                     <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
                 </>
                 }
@@ -223,22 +241,12 @@ const ProfilScreen = () => {
                 }
             </View>
         <TipsModal tipsModalRef={bottomSheetModalRef} />
+        <SubscribeModal name={name} username={username} subscribeModalRef={subscribeModalRef} source={profilPicture} />
         </ScrollView>
         </View>
 )
 }
 const styles = StyleSheet.create({
-    testDeOuf: {
-        flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-    position: 'absolute',
-    top: Constants.statusBarHeight, // positionner l'en-tête en haut de l'écran, juste en dessous de la barre d'état
-    left: 0,
-    right: 0,
-    height: 50,
-    },
     grandeContainor: {
         flex: 1,
         backgroundColor: colors.dark.background,
@@ -306,9 +314,18 @@ const styles = StyleSheet.create({
     },
 
     mainContainer: {
-        padding: 2
+        padding: 2,
     },
     secondContainer: {
+    },
+    searchIcon: {
+        backgroundColor: 'black',
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        opacity: 0.4,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     test: {
         borderTopRightRadius: 15,
@@ -316,8 +333,6 @@ const styles = StyleSheet.create({
     },
     ppContainer: {
         backgroundColor: colors.lightGrey,
-        alignItems: 'center',
-        left: "35%",
     },
     upContainer: {
         flexDirection: 'row',

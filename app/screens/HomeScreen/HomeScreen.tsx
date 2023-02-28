@@ -5,7 +5,7 @@ import { useAppSelector } from '../../redux/store';
 import PostCard from '../../components/PostCard/PostCard';
 import { useScrollToTop } from '@react-navigation/native';
 import BottomSheet, {BottomSheetModalProvider, BottomSheetModal} from '@gorhom/bottom-sheet';
-import TipsModal from '../../components/TipsModal/TipsModal';
+import TipsModal from '../../components/Modals/TipsModal/TipsModal';
 
 const HomeScreen = () => {
   const [postsList, setPostsList] = useState<any>()

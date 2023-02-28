@@ -11,9 +11,9 @@ import ProfilPicture from '../ProfilPicture/ProfilPicture';
 import colors from '../../config/colors';
 import { Divider } from 'react-native-elements';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import TipsModal from '../TipsModal/TipsModal';
-import PostOptionsModal from '../PostOptionsModal/PostOptionsModal';
-import UnlockModal from '../UnlockModal/UnlockModal';
+import TipsModal from '../Modals/TipsModal/TipsModal';
+import PostOptionsModal from '../Modals/PostOptionsModal/PostOptionsModal';
+import UnlockModal from '../Modals/UnlockModal/UnlockModal';
 
 interface PostCardProps {
     description?: string;
