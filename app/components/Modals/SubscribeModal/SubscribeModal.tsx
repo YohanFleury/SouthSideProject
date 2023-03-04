@@ -106,14 +106,14 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({ subscribeModalRef, sour
                    <View style={styles.privileges}>
                     {
                         labelPrivileges.map((label, index) => (
-                        <>
+                        <View key={index}>
                             <View style={styles.tableLine}>
                                 <CustomText style={{fontSize: 17}}>{label}</CustomText>
                                 <Ionicons name="shield-checkmark-sharp" size={24} color="green" />
                             </View>
                             {index < 3 &&
                             <Divider width={0.5} color={colors.medium} style={{width: '50%'}} />}
-                        </>
+                        </View>
                         ))
                     }
                    </View>

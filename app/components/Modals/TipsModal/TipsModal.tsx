@@ -108,6 +108,7 @@ const TipsModal: React.FC<TipsModalProps> = ({ tipsModalRef }) => {
 const styles = StyleSheet.create({
    btn: {
     width: 150,
+    justifyContent: 'center'
    }, 
    btnContainer: {
     marginTop: 15,

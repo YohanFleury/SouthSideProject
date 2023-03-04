@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Text, Button, ScrollView, NativeSyntheticEvent, NativeScrollEvent, Dimensions, StatusBar } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons, Ionicons, Octicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons, Octicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import { Divider } from 'react-native-elements'
 import { Fontisto } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -12,6 +12,7 @@ import { BottomSheetModal} from '@gorhom/bottom-sheet';
 import Constants from 'expo-constants';
 import { BlurView } from 'expo-blur';
 import Animated, {SlideInDown, SlideInUp} from 'react-native-reanimated';
+import Swiper from 'react-native-swiper' ;
 
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CoverPicture from '../../components/CoverPicture/CoverPicture';
@@ -99,9 +100,7 @@ const ProfilScreen = () => {
             scrollEventThrottle={20}
             >
             <View style={[styles.mainContainer, {paddingTop: 0.0558*screenHeight}]}>
-                <View style={[styles.ppContainer, {width: 75+10, height: 75+10, borderRadius: (75+10)/2}]}>
-                    <ProfilPicture size={75} source={profilPicture} />
-                </View>
+                <ProfilPicture size={75} source={profilPicture} />
                 <View style={styles.container2}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20}}>
                         <View style={{width: '80%'}}>
@@ -119,16 +118,22 @@ const ProfilScreen = () => {
                             </CustomText>
                         </View>
                         <View style={styles.iconsActions}>
-                            <AntDesign name="adduser" size={21} color={colors.dark.primary} />
-                            <MaterialCommunityIcons name="email-send-outline" size={21} color={colors.dark.primary} />
-                            <Fontisto name="bell" size={21} color={colors.dark.primary} />
+                            <View style={styles.upIcons}>
+                                <FontAwesome name="star-o" size={19} color={colors.white} />
+                            </View>
+                            <View style={styles.upIcons}>
+                                <Fontisto name="bell" size={19} color={colors.white} />
+                            </View>
+                            <View style={styles.upIcons}>
+                                <MaterialCommunityIcons name="email-send-outline" size={19} color={colors.white} />
+                            </View>
                         </View>
                     </View>
                 </View>
             </View>
             <View ref={buttonRef} style={{padding: 15, alignItems: 'center'}}>
                 {!isSub && 
-                <CustomButton title="S'abonner" onPress={() => subscribeModalRef.current?.present()} style={{width: 200, justifyContent: 'center'}} />}
+                <CustomButton title="S'abonner" onPress={() => subscribeModalRef.current?.present()} style={{width: "100%", justifyContent: 'center'}} />}
                 {isSub && 
                 <CustomButton title="Abonné" onPress={() => null} style={{backgroundColor: 'transparent', width: 120}} icon={<Ionicons name="ios-checkmark-sharp" size={24} color="white" />} />}
             </View>
@@ -168,7 +173,7 @@ const ProfilScreen = () => {
                                 onPress={() => setContentType('posts')} 
                             />
                             {contentType === "posts" &&
-                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 40, alignSelf: 'center' }} />}
+                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 50, alignSelf: 'center' }} />}
                         </View>
                         <View>
                             <Button 
@@ -177,7 +182,7 @@ const ProfilScreen = () => {
                                 onPress={() => setContentType('medias')} 
                             />
                             {contentType === "medias" &&
-                            <View style={{borderWidth: 0.9, borderColor: colors.dark.primary, }} />}
+                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 60, alignSelf: 'center' }} />}
                         </View>
                         <View>
                             <Button 
@@ -186,7 +191,7 @@ const ProfilScreen = () => {
                                 onPress={() => setContentType('lives')}
                             />
                             {contentType === "lives" &&
-                            <View style={{borderWidth: 0.7, borderColor: colors.dark.primary, }} />}
+                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 40, alignSelf: 'center' }} />}
                         </View>
                     </View>
                 </View>
@@ -202,7 +207,7 @@ const ProfilScreen = () => {
                                 onPress={() => setContentType('posts')} 
                             />
                             {contentType === "posts" &&
-                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 40, alignSelf: 'center' }} />}
+                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 50, alignSelf: 'center' }} />}
                         </View>
                         <View>
                             <Button 
@@ -211,7 +216,7 @@ const ProfilScreen = () => {
                                 onPress={() => setContentType('medias')} 
                             />
                             {contentType === "medias" &&
-                            <View style={{borderWidth: 0.9, borderColor: colors.dark.primary, }} />}
+                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 62, alignSelf: 'center' }} />}
                         </View>
                         <View>
                             <Button 
@@ -220,17 +225,17 @@ const ProfilScreen = () => {
                                 onPress={() => setContentType('lives')}
                             />
                             {contentType === "lives" &&
-                            <View style={{borderWidth: 0.7, borderColor: colors.dark.primary, }} />}
+                            <View style={{borderWidth: 1.5, borderColor: colors.dark.primary, width: 40, alignSelf: 'center' }} />}
                         </View>
                     </View>
                 </View>
-            <View>
+                <View>
                 {contentType === "posts" &&
                 <>
-                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
-                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} username='elonmuskX' name="Elon Musk" likes={32445} description={description} />
-                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={!isSub} description={description} />
-                    <PostCard onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username='elonmuskX' name="Elon Musk" likes={32445} blurred={false} description={description} />
+                    <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={32445} blurred={false} description={description} />
+                    <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} username={username} name={name} likes={32445} description={description} />
+                    <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={324} blurred={!isSub} description={description} />
+                    <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={2005} blurred={false} description={description} />
                 </>
                 }
                 {contentType === "medias" &&
@@ -239,7 +244,7 @@ const ProfilScreen = () => {
                 {contentType === "lives" &&
                 <FullScreenImage images={imageURIs} />
                 }
-            </View>
+            </View> 
         <TipsModal tipsModalRef={bottomSheetModalRef} />
         <SubscribeModal name={name} username={username} subscribeModalRef={subscribeModalRef} source={profilPicture} />
         </ScrollView>
@@ -339,6 +344,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 10,
+    },
+    upIcons: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        borderColor: colors.dark.primary,
+        borderWidth: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     userName: {
         fontSize: 15,

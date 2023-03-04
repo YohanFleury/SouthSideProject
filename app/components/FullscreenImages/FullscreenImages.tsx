@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    marginTop: 10
   },
   image: {
     width: Dimensions.get('window').width / 3 - 12,

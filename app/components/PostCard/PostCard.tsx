@@ -23,11 +23,12 @@ interface PostCardProps {
     username: string;
     name: string;
     onTipsPress: () => void;
+    source: any;
 }
 
 const DOUBLE_PRESS_DELAY = 300;
 
-const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, username, name, likes, onTipsPress }) => {
+const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, username, name, likes, onTipsPress, source }) => {
     const {width, height} = useWindowDimensions()
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const [isSignet, setIsSignet] = useState<boolean>(false)
@@ -57,7 +58,7 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
             <View style={styles.header}>
                 <View style={styles.profilInfos}>
                     <View style={{flexDirection: 'row'}}>
-                        <ProfilPicture source='https://randomuser.me/api/portraits/women/1.jpg' size={45} />
+                        <ProfilPicture source={source} size={45} />
                         <View style={{justifyContent: 'space-evenly'}}>
                             <CustomText style={{fontSize: 16, fontWeight: 'bold',}}>{name}</CustomText>
                             <CustomText style={{fontSize: 14, color: colors.medium}}>{`@${username}`}</CustomText>
@@ -98,7 +99,7 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
                     <Ionicons 
                         name={isLiked ? "heart" : "heart-outline"} 
                         size={27} 
-                        color={isLiked ? "#C80710" : "white"} 
+                        color={isLiked ? colors.dark.primary : "white"} 
                         onPress={() => setIsLiked(x => !x)}
                     />
                     <CustomText style={{fontSize: 11, marginLeft: 5, marginTop: 5}}>{likes}</CustomText>
@@ -140,7 +141,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "flex-end",
         overflow: "hidden",
-        marginBottom: 10,
         paddingVertical: 10
     },
    container: {

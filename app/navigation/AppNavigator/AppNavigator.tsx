@@ -74,7 +74,7 @@ const AppNavigator = () => {
             <Tab.Screen name={routes.RESEARCHNAVIGATOR} component={ResearchNavigator} options={{headerShown: false}} />
             <Tab.Screen name={routes.NEWPOST} component={NewPostScreen} options={{headerShown: false}} listeners={() => ({tabPress: event => event.preventDefault()})} />
             <Tab.Screen name={routes.NOTIFICATIONS} component={NotificationScreen} options={{headerShown: false}}  />
-            <Tab.Screen name={routes.CHAT} component={ChatScreen} options={{headerShown: false}} />
+            <Tab.Screen name={routes.CHAT} component={ChatScreen} options={{headerShown: false,}} />
         </Tab.Navigator>
     )
 }
