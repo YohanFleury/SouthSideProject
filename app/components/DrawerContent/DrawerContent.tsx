@@ -11,6 +11,7 @@ import CustomScreen from '../CustomScreen/CustomScreen'
 import CustomText from '../CustomText/CustomText'
 import DrawerHeader from './DrawerHeader';
 import DrawerBody from './DrawerBody';
+import colors from '../../config/colors';
 
 const DrawerContent = () => {
 
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
    container: {
     flex: 1,
     paddingHorizontal: 30,
-    paddingVertical: 15
+    paddingVertical: 10
    },
    logOut: {
     position: "absolute",

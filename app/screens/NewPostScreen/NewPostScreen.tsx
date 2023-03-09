@@ -31,7 +31,7 @@ const NewPostScreen = () => {
 
     const [inputValue, setInputValue] = useState<string>('')
     const [paramsModalVisible, setParamsModalVisible] = useState<boolean>()
-    const [isPrivate, setIsPrivate] = useState<boolean>(false)
+    const [isPrivate, setIsPrivate] = useState<boolean>(true)
 
     useEffect(() => {
       dispatch(resetImagesUris())
@@ -104,10 +104,10 @@ const NewPostScreen = () => {
       }, []);
     
    return (
-    <View style={{flex: 1, backgroundColor: colors.dark.background}}>
         <Modal
         animationType='slide'
         visible={visible}
+        style={{flex: 1, backgroundColor: colors.dark.background}}
         >
             <CustomScreen drawerStyle={{padding: 0}}>
             <KeyboardAvoidingView style={{flex: 1, padding: 15, backgroundColor: paramsModalVisible ? '#17172E' : 'transparent'}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -122,7 +122,6 @@ const NewPostScreen = () => {
                                 <Button title='Annuler' onPress={() => {
                                     dispatch(setOpenNewPostModal(false))
                                     setInputValue('')
-                                    navigation.navigate(routes.HOME)
                                     }} color={colors.white} />
                                 {inputValue.length > 0 &&
                                 <Button 
@@ -238,7 +237,6 @@ const NewPostScreen = () => {
             </BottomSheetModalProvider>
         </CustomScreen>
     </Modal>
-    </View>
    )
 }
 

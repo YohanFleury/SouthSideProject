@@ -13,6 +13,7 @@ import Constants from 'expo-constants';
 import { BlurView } from 'expo-blur';
 import Animated, {SlideInDown, SlideInUp} from 'react-native-reanimated';
 import Swiper from 'react-native-swiper' ;
+import { useAppSelector } from '../../redux/store';
 
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CoverPicture from '../../components/CoverPicture/CoverPicture';
@@ -24,8 +25,7 @@ import FullScreenImage from '../../components/FullscreenImages/FullscreenImages'
 import TipsModal from '../../components/Modals/TipsModal/TipsModal';
 import GoBackBtn from '../../components/BackButton/BackButton';
 import SubscribeModal from '../../components/Modals/SubscribeModal/SubscribeModal';
-import { useAppSelector } from '../../redux/store';
-
+import SurveyCard from '../../components/SurveyCard/SurveyCard';
 
 type ProfilScreenRouteProp = RouteProp<ResearchRoutesParams, 'Profil'>;
 
@@ -233,6 +233,7 @@ const ProfilScreen = () => {
                 {contentType === "posts" &&
                 <>
                     <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={32445} blurred={false} description={description} />
+                    <SurveyCard subject='Pensez vous que cette appli éclatée va marcher un jour ?' name={name} username={username} source={profilPicture} />
                     <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} username={username} name={name} likes={32445} description={description} />
                     <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={324} blurred={!isSub} description={description} />
                     <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={2005} blurred={false} description={description} />

@@ -5,7 +5,7 @@ import {MaterialCommunityIcons } from '@expo/vector-icons'
 import colors from '../../config/colors'
 
 type npBtn = {
-    onPress: () => void;
+    onPress?: () => void;
 }
 
 const NewpostButton: React.FC<npBtn> = ({ onPress }) => {

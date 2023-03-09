@@ -1,15 +1,9 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, Foundation } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 
 import routes from '../routes';
 import HomeScreen from '../../screens/HomeScreen/HomeScreen';
-import colors from '../../config/colors';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import NewPostScreen from '../../screens/NewPostScreen/NewPostScreen';
 import ChatScreen from '../../screens/ChatScreen/ChatScreen';
 
 export type HomeNavigatorParams = {

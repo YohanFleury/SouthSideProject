@@ -113,7 +113,7 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
                     <Ionicons name="bookmarks-outline" size={24} color="white" />
                 </View>
             </View>
-            <Divider style={{marginBottom: 5, marginTop: 5}} width={0.3} color={"#262527"} />
+            <Divider style={{marginBottom: 5, marginTop: 5}} width={0.3} color={colors.lightGrey} />
         </View>
         {
             blurred && 

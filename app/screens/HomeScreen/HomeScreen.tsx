@@ -13,6 +13,7 @@ import colors from '../../config/colors';
 import CustomText from '../../components/CustomText/CustomText';
 import { HomeNavigatorParams } from '../../navigation/HomeNavigator/HomeNavigator';
 import routes from '../../navigation/routes';
+import SurveyCard from '../../components/SurveyCard/SurveyCard';
 
 const screenHeight =  Dimensions.get('window').height
 
@@ -30,13 +31,11 @@ const HomeScreen = () => {
   
   useScrollToTop(ref)
 
- 
-
   return (
       <View style={{flex: 1}}>
         <View style={styles.mainContainer}>
-          
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={postsList}
             ref={ref}
             renderItem={({ item, index }) => (
@@ -57,7 +56,7 @@ const HomeScreen = () => {
             <BlurView tint='dark' intensity={100} style={[styles.header, StyleSheet.absoluteFill]}>
               <Ionicons name="menu" size={31} color="white" onPress={() => navigation.openDrawer()} />
               <CustomText style={{marginBottom: 5}}>Accueil</CustomText>
-              <Ionicons name="chatbox-outline" size={26} color="white" onPress={() => navigation.navigate(routes.CHAT)} />
+              <Ionicons name="chatbox-outline" size={26} color="white" onPress={() => navigation.navigate()} />
             </BlurView>
           <TipsModal tipsModalRef={bottomSheetModalRef} />
         </View>

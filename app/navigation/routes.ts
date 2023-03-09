@@ -1,18 +1,20 @@
 export default Object.freeze({
     // App
     CHAT: 'Chat',
+    CREATION: 'Creation',
     DRAWER: 'Drawer',
     HOME: 'Home',
+    NEWPOST: 'NewPost',
     NOTIFICATIONS: 'Notifications',
     PROFIL: 'Profil',
     RESEARCH: 'Research',
+    SURVEY: 'Survey',
     WALLET: 'Wallet',
-    NEWPOST: 'NewPost',
-    DefaultComponent: 'DefaultComponent',
     
     // Navigators
     HOMENAVIGATOR: 'HomeNavigator',
     RESEARCHNAVIGATOR: 'ResearchNavigator',
+    CREATIONNAVIGATOR: 'CreationNavigator',
     APPNAVIGATOR: 'AppNavigator',
 
     // Auth
