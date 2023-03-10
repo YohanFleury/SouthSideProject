@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, } from 'react-native'
 import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
 
-import {MaterialCommunityIcons, Fontisto, Octicons, } from '@expo/vector-icons'
+import {MaterialCommunityIcons, Fontisto, Octicons, Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import HomeNavigator, { HomeNavigatorParams } from '../HomeNavigator/HomeNavigator';
@@ -17,7 +17,7 @@ import ResearchNavigator from '../ResearchNavigator/ResearchNavigator';
 import CreationScreen from '../../screens/CreationScreen/CreationScreen';
 
 import colors from '../../config/colors';
-import { useAppDispatch } from '../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { BlurView } from 'expo-blur';
 import CreationNavigator from '../CreationNavigator/CreationNavigator';
 
@@ -25,7 +25,9 @@ const Tab = createBottomTabNavigator()
 
 const AppNavigator = () => {
 
+
     const navigation = useNavigation<NativeStackNavigationProp<HomeNavigatorParams>>()
+    const isChatScreenVisible = useAppSelector(state => state.context.chatVisible)
 
     return (
         <Tab.Navigator tabBar={(props) => (
@@ -46,7 +48,7 @@ const AppNavigator = () => {
               if (route.name === routes.HOMENAVIGATOR) {
                   return <MaterialCommunityIcons onPress={() => navigation.navigate(routes.HOME)} name={focused ? 'home' : 'home-outline'} color={focused ? colors.white : colors.medium} size={29} />
               } else if (route.name === routes.RESEARCHNAVIGATOR) {
-                return <Octicons name="search" size={23} color={focused ? colors.white : colors.medium} />
+                return <Ionicons name="people" size={28} color={focused ? colors.white : colors.medium} />
               } else if (route.name === routes.NOTIFICATIONS) {
                return <Fontisto style={{marginBottom: 4}} name={focused ? "bell-alt" : "bell"} size={23} color={focused ? colors.white : colors.medium} />
               } else if (route.name === routes.CHAT) {
@@ -59,12 +61,15 @@ const AppNavigator = () => {
             },
             tabBarLabel:() => {return null},
             fullScreenGestureEnabled: true,
-            tabBarStyle: {backgroundColor: 'transparent', height: 80, borderTopWidth: 0, paddingTop: 10
+            tabBarStyle: {backgroundColor: 'transparent', height: 80, paddingTop: 10, display: isChatScreenVisible ? 'none' : 'flex'
              },
              
           })}>
-            <Tab.Screen name={routes.HOMENAVIGATOR} component={HomeNavigator} options={{headerShown: false,}}  />
-            <Tab.Screen name={routes.RESEARCHNAVIGATOR} component={ResearchNavigator} options={{headerShown: false}} />
+            <Tab.Screen 
+              name={routes.HOMENAVIGATOR} 
+              component={HomeNavigator} 
+              options={{headerShown: false,}}  />
+            <Tab.Screen name={routes.RESEARCHNAVIGATOR} component={ResearchNavigator} options={{headerShown: false,}} />
             <Tab.Screen name={routes.CREATIONNAVIGATOR} component={CreationNavigator} options={{headerShown: false}}  />
             <Tab.Screen name={routes.NOTIFICATIONS} component={NotificationScreen} options={{headerShown: false}}  />
             <Tab.Screen name={routes.CHAT} component={ChatScreen} options={{headerShown: false,}} />

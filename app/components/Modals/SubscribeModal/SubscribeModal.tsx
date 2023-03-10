@@ -2,6 +2,7 @@ import { View, StyleSheet, TouchableNativeFeedback, ActivityIndicator, Dimension
 import React, {useMemo, useCallback, useState} from 'react'
 import BottomSheet, {BottomSheetModalProvider, BottomSheetModal, BottomSheetBackdropProps, BottomSheetBackdrop, BottomSheetModalProps} from '@gorhom/bottom-sheet';
 import { AntDesign, MaterialIcons, FontAwesome, MaterialCommunityIcons, Ionicons, Feather} from '@expo/vector-icons';
+import { useAppSelector } from '../../../redux/store';
 
 import colors from '../../../config/colors';
 import CustomText from '../../CustomText/CustomText';
@@ -27,6 +28,8 @@ interface SubscribeModalProps {
 const screenWidth = Dimensions.get('window').width
 
 const SubscribeModal: React.FC<SubscribeModalProps> = ({ subscribeModalRef, source, name, username }) => {
+
+    const theme = useAppSelector(state => state.context.theme)
 
     const [loading, setLoading] = useState<boolean>(false)
     const [showSuccess, setShowSuccess] = useState<boolean>(false)
@@ -81,7 +84,7 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({ subscribeModalRef, sour
         backdropComponent={renderBackdrop}
         snapPoints={snapPoints}
         backgroundStyle={{
-            backgroundColor: colors.dark.background, 
+            backgroundColor: theme === 'dark' ? colors.dark.background : colors.light.background, 
             borderRadius: 35,
             borderTopColor: colors.lightGrey,
             borderLeftColor: colors.lightGrey,

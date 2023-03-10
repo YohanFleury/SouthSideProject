@@ -2,6 +2,7 @@ import React, {useMemo, useCallback, useState} from 'react'
 import { View, StyleSheet, Pressable, TouchableHighlight, Button, TouchableNativeFeedback } from 'react-native'
 import BottomSheet, {BottomSheetModalProvider, BottomSheetModal, BottomSheetBackdropProps, BottomSheetBackdrop, BottomSheetModalProps} from '@gorhom/bottom-sheet';
 import { FontAwesome5} from '@expo/vector-icons';
+import { useAppSelector } from '../../../redux/store';
 
 import colors from '../../../config/colors';
 import CustomText from '../../CustomText/CustomText';
@@ -19,6 +20,7 @@ interface TipsModalProps {
 
 
 const UnlockModal: React.FC<TipsModalProps> = ({ unlockModalRef }) => {
+    const theme = useAppSelector(state => state.context.theme)
 
     const [tipValue, setTipValue] = useState<string>("")
     const [tipMessage, setTipMessage] = useState<string>("")
@@ -51,7 +53,7 @@ const UnlockModal: React.FC<TipsModalProps> = ({ unlockModalRef }) => {
         backdropComponent={renderBackdrop}
         snapPoints={snapPoints}
         backgroundStyle={{
-            backgroundColor: colors.dark.background, 
+            backgroundColor: theme === 'dark' ? colors.dark.background : colors.light.background, 
             borderRadius: 20,
             borderTopColor: colors.lightGrey,
             borderLeftColor: colors.lightGrey,
@@ -68,7 +70,6 @@ const UnlockModal: React.FC<TipsModalProps> = ({ unlockModalRef }) => {
                     <CustomText style={{fontSize: 21}}>Contenu exclusif</CustomText>
                     <FontAwesome5 name="lock" size={25} color={colors.white} />
                 </View>
-                <Divider />
                 <View style={styles.subscribe}>
                     <CustomText style={styles.text}>S'abonner à l'auteur</CustomText>
                     <CustomButton title="S'abonner" onPress={() => null} />

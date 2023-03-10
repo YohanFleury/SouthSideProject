@@ -4,13 +4,14 @@ import { FontAwesome5, Entypo, Ionicons, MaterialIcons, Foundation, FontAwesome 
 import { BlurView } from 'expo-blur'
 import Swiper from 'react-native-swiper';
 import { BottomSheetModal} from '@gorhom/bottom-sheet';
+import { useAppSelector } from '../../redux/store';
+import { Divider } from 'react-native-elements';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
 import CustomText from '../CustomText/CustomText';
 import ProfilPicture from '../ProfilPicture/ProfilPicture';
 import colors from '../../config/colors';
-import { Divider } from 'react-native-elements';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import TipsModal from '../Modals/TipsModal/TipsModal';
 import PostOptionsModal from '../Modals/PostOptionsModal/PostOptionsModal';
 import UnlockModal from '../Modals/UnlockModal/UnlockModal';
@@ -29,6 +30,8 @@ interface PostCardProps {
 const DOUBLE_PRESS_DELAY = 300;
 
 const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, username, name, likes, onTipsPress, source }) => {
+    const theme = useAppSelector(state => state.context.theme)
+
     const {width, height} = useWindowDimensions()
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const [isSignet, setIsSignet] = useState<boolean>(false)
@@ -65,7 +68,11 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
                         </View>
                     </View>
                     <View>
-                        <MaterialIcons name="more-horiz" size={24} color="white" onPress={() => bottomSheetModalRef.current?.present()} />
+                        <MaterialIcons 
+                            name="more-horiz" 
+                            size={24} 
+                            color={theme === 'dark' ? "white" : "black"} 
+                            onPress={() => bottomSheetModalRef.current?.present()} />
                     </View>
                 </View>
                 {description &&
@@ -99,21 +106,32 @@ const PostCard: React.FC<PostCardProps> = ({ description, images, blurred, usern
                     <Ionicons 
                         name={isLiked ? "heart" : "heart-outline"} 
                         size={27} 
-                        color={isLiked ? colors.dark.primary : "white"} 
+                        color={isLiked 
+                            ? colors.dark.primary 
+                            : theme === "dark" 
+                            ? "white"
+                            : 'black'
+                        } 
                         onPress={() => setIsLiked(x => !x)}
                     />
                     <CustomText style={{fontSize: 11, marginLeft: 5, marginTop: 5}}>{likes}</CustomText>
                 </View>
                 <View style={{flex: 1/3, alignItems: 'center'}}>
-                    <TouchableWithoutFeedback onPress={onTipsPress} style={{borderWidth: 1, borderColor: 'white', width: 26, height: 26, borderRadius: 13, justifyContent: 'center', alignItems: 'center'}}>
-                        <FontAwesome name="dollar" size={19} color="white" />
+                    <TouchableWithoutFeedback onPress={onTipsPress} style={{borderWidth: 1, borderColor: theme === 'dark' ? "white" : "black", width: 26, height: 26, borderRadius: 13, justifyContent: 'center', alignItems: 'center'}}>
+                        <FontAwesome 
+                            name="dollar" 
+                            size={19} 
+                            color={theme === 'dark' ? "white" : "black"}  />
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={{flex: 1/3, alignItems: 'flex-end'}}>
-                    <Ionicons name="bookmarks-outline" size={24} color="white" />
+                    <Ionicons 
+                        name="bookmarks-outline" 
+                        size={24} 
+                        color={theme === 'dark' ? "white" : "black"}  />
                 </View>
             </View>
-            <Divider style={{marginBottom: 5, marginTop: 5}} width={0.3} color={colors.lightGrey} />
+            <Divider style={{marginBottom: 5, marginTop: 5}} width={0.3} color={theme === "dark" ? colors.lightGrey : colors.medium} />
         </View>
         {
             blurred && 

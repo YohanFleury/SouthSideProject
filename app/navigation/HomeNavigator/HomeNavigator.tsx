@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import routes from '../routes';
 import HomeScreen from '../../screens/HomeScreen/HomeScreen';
 import ChatScreen from '../../screens/ChatScreen/ChatScreen';
+import HomeandChatScreen from '../../screens/HomeandChatScreen/HomeandChatScreen';
+import { useAppSelector } from '../../redux/store';
 
 export type HomeNavigatorParams = {
     Home: undefined;
@@ -15,23 +17,28 @@ export type HomeNavigatorParams = {
 const Stack = createNativeStackNavigator<HomeNavigatorParams>()
 
 const HomeNavigator = ({navigation}: any) => {
-
+    const isChatScreenVisible = useAppSelector(state => state.context.chatVisible)
     return (
     <Stack.Navigator screenOptions={{
       }}>
-        <Stack.Screen name={routes.HOME} component={HomeScreen} options={{
+        <Stack.Screen name={routes.HOME} component={HomeandChatScreen} options={{
          headerShown: false, 
-         fullScreenGestureEnabled: true,
          headerTransparent: true,
          headerBlurEffect: 'dark',
          headerTintColor: 'transparent',
+         headerLeft: undefined,
          gestureDirection: 'horizontal',
+         fullScreenGestureEnabled: true,
+         gestureEnabled: !isChatScreenVisible
         }} 
         
         />
         <Stack.Screen name={routes.CHAT} component={ChatScreen} options={{
             fullScreenGestureEnabled: true,
             animation: 'slide_from_right',
+            gestureDirection: 'horizontal',
+            gestureEnabled: false,
+            
         }} />
     </Stack.Navigator>
    )

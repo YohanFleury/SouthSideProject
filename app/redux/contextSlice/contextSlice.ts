@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 interface initialStateProps {
-    theme: 'dark' | 'light'
+    theme: 'dark' | 'light',
+    chatVisible: boolean
 }
 
 export const initialState: initialStateProps = {
-    theme: "dark"
+    theme: "dark",
+    chatVisible: false
 }
 
 export const contextSlice = createSlice({
@@ -20,12 +22,16 @@ export const contextSlice = createSlice({
             state.theme === "dark" 
             ? state.theme = "light"
             : state.theme = "dark"
+        },
+
+        setChatVisible: (state, {payload}) => {
+            state.chatVisible = payload
         }
         
     }
 })
 
 
-export const { setTheme, switchTheme } = contextSlice.actions
+export const { setTheme, switchTheme, setChatVisible } = contextSlice.actions
 
 export default contextSlice.reducer

@@ -12,10 +12,10 @@ export default Object.freeze({
     WALLET: 'Wallet',
     
     // Navigators
+    APPNAVIGATOR: 'AppNavigator',
+    CREATIONNAVIGATOR: 'CreationNavigator',
     HOMENAVIGATOR: 'HomeNavigator',
     RESEARCHNAVIGATOR: 'ResearchNavigator',
-    CREATIONNAVIGATOR: 'CreationNavigator',
-    APPNAVIGATOR: 'AppNavigator',
 
     // Auth
     LOGIN: 'Login',

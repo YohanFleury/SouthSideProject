@@ -1,9 +1,9 @@
 export default {
     light: {
-        primary: "",
+        primary: "#E1A700",
         secondary: "",
-        background: "",
-        texte: ""
+        background: "#F3F3F3",
+        texte: "#232323"
     },
     dark: {
         primary: "#E1A700",

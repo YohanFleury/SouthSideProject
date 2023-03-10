@@ -7,6 +7,7 @@ import ResearchScreen from '../../screens/ResearchScreen/ResearchScreen';
 import ProfilScreen from '../../screens/ProfilScreen/ProfilScreen';
 
 export type ResearchRoutesParams = {
+    Research: undefined;
     Profil: {
         id: number;
         name: string;
@@ -15,16 +16,26 @@ export type ResearchRoutesParams = {
         profilPicture: ImageSourcePropType;
         isCertified: boolean;
     };
-    Research: undefined;
 }
 
 const Stack = createNativeStackNavigator<ResearchRoutesParams>()
 
 const ResearchNavigator = () => {
    return (
-    <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName={routes.RESEARCH}>
-        <Stack.Screen name={routes.RESEARCH} component={ResearchScreen} />
-        <Stack.Screen name={routes.PROFIL} component={ProfilScreen} options={{headerShown: false, fullScreenGestureEnabled: true}} />
+    <Stack.Navigator>
+        <Stack.Screen name={routes.RESEARCH} component={ResearchScreen} options={{
+                headerShown: false, 
+                fullScreenGestureEnabled: true,
+                gestureEnabled: true,
+                }} />
+        <Stack.Screen 
+            name={routes.PROFIL} 
+            component={ProfilScreen} 
+            options={{
+                headerShown: false, 
+                fullScreenGestureEnabled: true,
+                gestureEnabled: true
+                }} />
     </Stack.Navigator>
    )
 }

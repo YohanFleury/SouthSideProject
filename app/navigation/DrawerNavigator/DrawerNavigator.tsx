@@ -1,5 +1,6 @@
 import React from 'react'
 import { createDrawerNavigator} from '@react-navigation/drawer'
+import { Dimensions } from 'react-native';
 
 // Routes : 
 import routes from '../routes'
@@ -19,15 +20,18 @@ export type DrawerNavigatorParams = {
 
 const DrawerNavigator = () => {
     return (
+        
         <Drawer.Navigator 
             drawerContent={() => <DrawerContent />}
             screenOptions={{
                 drawerType: 'slide',
             }}
+            id="leftD"
         >
             <Drawer.Screen name={routes.APPNAVIGATOR} component={AppNavigator} options={{headerShown: false, swipeEdgeWidth: 500 }} />
             <Drawer.Screen name={routes.WALLET} component={WalletScreen} />
         </Drawer.Navigator>
+        
     )
 }
 

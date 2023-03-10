@@ -1,5 +1,8 @@
 import React from 'react'
 import { View, StyleSheet, Pressable, ImageSourcePropType } from 'react-native'
+import colors from '../../config/colors';
+import { useAppSelector } from '../../redux/store';
+
 import CustomText from '../CustomText/CustomText'
 import ProfilPicture from '../ProfilPicture/ProfilPicture'
 
@@ -10,8 +13,16 @@ type MySubCardProps = {
 }
 
 const MySubCard: React.FC<MySubCardProps> = ({ onPress, name, source }) => {
+    const theme = useAppSelector(state => state.context.theme)
+
    return (
-      <Pressable testID='my-sub-card' onPress={onPress} style={styles.container}>
+      <Pressable 
+        testID='my-sub-card' 
+        onPress={onPress} 
+        style={[
+            styles.container,
+            {backgroundColor: theme === 'dark' ? '#2A293B' : '#636363'}
+        ]}>
         <View style={styles.ppContainer}>
             <ProfilPicture source={source} size={70} onPress={onPress} />
         </View>
@@ -40,7 +51,8 @@ const styles = StyleSheet.create({
    text: {
     fontSize: 15,
     textAlign: 'center',
-    marginTop: 3
+    marginTop: 3,
+    color: colors.dark.texte
    }, 
    textContainer: {
     flexDirection: 'row',

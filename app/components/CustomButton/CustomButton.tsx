@@ -29,12 +29,12 @@ const CustomButton: React.FC<Props> = ({ title, onPress, style, textStyle, icon,
             : theme === "dark" 
             ? '#CD7D11' 
             : colors.light.primary,
-          backgroundColor: disabled ? colors.medium : colors.dark.primary
+          backgroundColor: disabled ? colors.medium : 'colors.dark.primary'
           }
         ]
       } 
       onPress={onPress}>
-      <CustomText style={textStyle}>{title}</CustomText>
+      <CustomText style={[textStyle, {color: 'white'}]}>{title}</CustomText>
       {icon}
     </TouchableOpacity>
   );
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 25,
     alignItems: 'center',
-    backgroundColor: colors.dark.primary,
     flexDirection: "row",
     justifyContent: 'space-between'
   },

@@ -1,24 +1,30 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-import colors from '../../config/colors'
+import { useAppSelector } from '../../redux/store';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { DrawerNavigatorParams } from '../../navigation/DrawerNavigator/DrawerNavigator';
 
+import colors from '../../config/colors'
 import CustomText from '../CustomText/CustomText'
 import ProfilPicture from '../ProfilPicture/ProfilPicture'
 import routes from '../../navigation/routes';
-import { DrawerNavigatorParams } from '../../navigation/DrawerNavigator/DrawerNavigator';
 
 
 const DrawerHeader = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DrawerNavigatorParams>>()
+    const theme = useAppSelector(state => state.context.theme)
+
    return (
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between', }}>
             <ProfilPicture size={45} source='https://randomuser.me/api/portraits/men/11.jpg' />
-            <MaterialCommunityIcons name="home" size={27} color="white" onPress={() => navigation.navigate(routes.APPNAVIGATOR)} />
+            <MaterialCommunityIcons 
+               name="home" 
+               size={27} 
+               color={theme === 'dark' ? "white" : "black"} 
+               onPress={() => navigation.navigate(routes.APPNAVIGATOR)} />
         </View>
         <CustomText style={{marginTop: 10, marginBottom: 5}} >Yohan F</CustomText>
         <CustomText style={styles.userName}>@yohfleury_95</CustomText>

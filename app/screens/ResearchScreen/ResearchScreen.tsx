@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Keyboard, Pressable, Button, ScrollView } from 'react-native'
-import { Octicons } from '@expo/vector-icons';
+import { View, StyleSheet, Keyboard, Pressable, Button, ScrollView, Dimensions } from 'react-native'
+import { Octicons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { DrawerNavigationProp } from '@react-navigation/drawer';
@@ -15,6 +15,10 @@ import { filterUsers, resetUsers } from '../../redux/userTestSlice';
 import ResearchResults from '../../components/ResearchResults/ResearchResults';
 import { ResearchRoutesParams } from '../../navigation/ResearchNavigator/ResearchNavigator'
 import routes from '../../navigation/routes';
+import colors from '../../config/colors';
+import { BlurView } from 'expo-blur';
+import ResearchTrend from '../../components/ResearchTrend/ResearchTrend';
+import TrendList from '../../components/TrendList/TrendList';
 
 const dataSub = [
     {
@@ -51,7 +55,7 @@ const dataSub = [
     },
 ]
 
-
+const screenHeight =  Dimensions.get('window').height
 
 const ResearchScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ResearchRoutesParams>>()
@@ -59,6 +63,7 @@ const ResearchScreen = () => {
     const [focus, setFocus] = useState<boolean>(false)
 
     const users = useAppSelector((state) => state.users.usersArray)
+    const theme = useAppSelector(state => state.context.theme)
     const dispatch = useAppDispatch()
 
     
@@ -71,17 +76,22 @@ const ResearchScreen = () => {
     }, [textSearch, dispatch])
     
     const onCancel = () => {
+        Keyboard.dismiss()
         setTextSearch('')
         dispatch(resetUsers())
         setFocus(false)
-        Keyboard.dismiss()
+    }
+    const onFocus = () => {
+        setFocus(true)
     }
 
    return (
-      <CustomScreen>
+      <View style={[styles.container, {backgroundColor: theme === 'dark' ? colors.dark.background : colors.light.background}]}>
+        <View style={{flex: 1}}>
         <ScrollView>
-
+        <View style={{height: 0.1*screenHeight}} />
             <View style={styles.header}>
+                {focus &&
                 <View style={{width:"80%"}}>
                 <CustomInput 
                     placeholder='Rechercher un utilisateur' 
@@ -90,33 +100,61 @@ const ResearchScreen = () => {
                     onSubmitEditing={onCancel}
                     width="90%"
                     value={textSearch}
-                    onFocus={() => setFocus(true)}
+                    autoFocus={focus}
                 />
-                </View>
-                {focus &&
-                <Pressable onPress={onCancel}>
-                    <CustomText>Annuler</CustomText>
-                </Pressable>}
-                {!focus &&
-                <Octicons name="filter" size={24} color="white" />
-                }
+                </View>}
             </View>   
-            {focus && textSearch.length > 0 &&
-            <ResearchResults data={users} />}
-            {!focus &&
-            <MySubs title='Mes abonnements' data={dataSub} />}
-            {!focus &&
-            <MySubs title='Cela pourrait vous intéresser' data={users} />}
+            <View style={{paddingTop: 10, paddingBottom: 80}}>
+                {focus && textSearch.length > 0 &&
+                <ResearchResults data={users} />}
+                {!focus &&
+                <MySubs title='Mes abonnements' data={dataSub} />}
+                {!focus &&
+                <TrendList data={users} />}
+            </View>
         </ScrollView>
-      </CustomScreen>
+        <BlurView tint='dark' intensity={100} style={[StyleSheet.absoluteFill, styles.blurView]}>
+            <Octicons 
+                name="filter" 
+                size={24} 
+                color={theme === "dark" ? "white" : "black"} 
+            />
+            <CustomText style={{marginBottom: 5, color: colors.white}}>Recherche</CustomText>
+            {!focus &&
+            <Octicons 
+                name="search" 
+                size={24} 
+                color={theme === "dark" ? "white" : "black"} 
+                onPress={onFocus}
+            />}
+            {focus &&
+            <Pressable onPress={onCancel}>
+                <CustomText>Annuler</CustomText>
+            </Pressable>
+            }
+        </BlurView>
+        
+        </View>
+      </View>
    )
 }
 
 const styles = StyleSheet.create({
+   blurView: {
+    height: 0.11*screenHeight,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingBottom: 10,
+    paddingHorizontal: 10, 
+    },
+    container: {
+        flex: 1,
+    },
    header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
+    paddingHorizontal: 15,
     justifyContent: 'space-between'
    }
 })
