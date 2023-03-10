@@ -13,6 +13,7 @@ interface Props {
   width?: string | number;
   onBlur?: (e: any) => void;
   secureTextEntry?: boolean;
+  autoFocus?: boolean;
 }
 
 const CustomInput: React.FC<Props> = ({ 
@@ -24,6 +25,7 @@ const CustomInput: React.FC<Props> = ({
   onFocus, 
   onBlur,
   secureTextEntry,
+  autoFocus,
   width = "70%",
 }) => {
   const inputRef = useRef<TextInput>(null);
@@ -37,6 +39,7 @@ const CustomInput: React.FC<Props> = ({
         <View style={styles.container}>
           <TextInput
             ref={inputRef}
+            autoFocus={autoFocus}
             onFocus={onFocus}
             value={value}
             onChangeText={onChangeText}
@@ -46,7 +49,14 @@ const CustomInput: React.FC<Props> = ({
             onBlur={onBlur}
             secureTextEntry={secureTextEntry}
             style={
-              [styles.input, {borderColor: theme ==="dark" ? colors.dark.primary : colors.light.primary, width: width, }]
+              [styles.input, 
+              {borderColor: theme ==="dark" 
+                ? colors.dark.primary 
+                : colors.light.primary, 
+                color: theme === 'dark' 
+                ? colors.dark.texte
+                : colors.light.texte,
+                width: width, }]
             }
             testID='input'
             placeholderTextColor={theme ==="dark" ? colors.medium : colors.light.texte}
@@ -65,7 +75,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderBottomWidth: 1,
     marginVertical: 10,
-    color: 'white',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'

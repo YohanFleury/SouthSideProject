@@ -11,16 +11,30 @@ interface Props {
   style?: ViewStyle;
   textStyle?: TextStyle;
   icon?: any;
+  disabled?: boolean
 }
 
-const CustomButton: React.FC<Props> = ({ title, onPress, style, textStyle, icon }) => {
+const CustomButton: React.FC<Props> = ({ title, onPress, style, textStyle, icon, disabled }) => {
 
   const theme = useAppSelector((state) => state.context.theme)
 
   return (
     <TouchableOpacity testID='button-container' 
-      style={[styles.button, style, {borderColor: theme === "dark" ? '#CD7D11' : colors.light.primary}]} onPress={onPress}>
-      <CustomText style={textStyle}>{title}</CustomText>
+      style={
+        [
+          styles.button, 
+          style, 
+          {borderColor: disabled 
+            ? colors.medium
+            : theme === "dark" 
+            ? '#CD7D11' 
+            : colors.light.primary,
+          backgroundColor: disabled ? colors.medium : 'colors.dark.primary'
+          }
+        ]
+      } 
+      onPress={onPress}>
+      <CustomText style={[textStyle, {color: 'white'}]}>{title}</CustomText>
       {icon}
     </TouchableOpacity>
   );
@@ -32,7 +46,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 25,
     alignItems: 'center',
-    backgroundColor: '#CD7D11',
     flexDirection: "row",
     justifyContent: 'space-between'
   },

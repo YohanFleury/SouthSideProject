@@ -7,7 +7,7 @@ import colors from '../../config/colors'
 
 type TextProp = {
     children: string | number,
-    style?: TextStyle,
+    style?: any,
 }
 
 const CustomText:React.FC<TextProp> = ({children, style}) => {

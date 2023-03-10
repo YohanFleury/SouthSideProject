@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Text, Button, ScrollView, NativeSyntheticEvent, NativeScrollEvent, Dimensions, StatusBar } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons, Ionicons, Octicons, MaterialIcons, FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons, Octicons, MaterialIcons, FontAwesome, } from '@expo/vector-icons';
 import { Divider } from 'react-native-elements'
 import { Fontisto } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -13,6 +13,7 @@ import Constants from 'expo-constants';
 import { BlurView } from 'expo-blur';
 import Animated, {SlideInDown, SlideInUp} from 'react-native-reanimated';
 import Swiper from 'react-native-swiper' ;
+import { useAppSelector } from '../../redux/store';
 
 import ProfilPicture from '../../components/ProfilPicture/ProfilPicture';
 import CoverPicture from '../../components/CoverPicture/CoverPicture';
@@ -24,8 +25,7 @@ import FullScreenImage from '../../components/FullscreenImages/FullscreenImages'
 import TipsModal from '../../components/Modals/TipsModal/TipsModal';
 import GoBackBtn from '../../components/BackButton/BackButton';
 import SubscribeModal from '../../components/Modals/SubscribeModal/SubscribeModal';
-import { useAppSelector } from '../../redux/store';
-
+import SurveyCard from '../../components/SurveyCard/SurveyCard';
 
 type ProfilScreenRouteProp = RouteProp<ResearchRoutesParams, 'Profil'>;
 
@@ -57,6 +57,8 @@ const ProfilScreen = () => {
     const route = useRoute<ProfilScreenRouteProp>()
     const { id, name, username, description, profilPicture, isCertified } = route.params;
     const isSub = useAppSelector(state => state.users.isSub)
+    const theme = useAppSelector(state => state.context.theme)
+
     const [contentType, setContentType] = useState<string>('posts')
     const [showBackButton, setShowBackButton] = useState<boolean>(false);
     const [previousOffset, setPreviousOffset] = useState<number>(0)
@@ -70,6 +72,7 @@ const ProfilScreen = () => {
     const myOtherViewRef = useRef<View>(null);
     
     const screenHeight = Dimensions.get('window').height
+    
     
     const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
         const { contentOffset } = event.nativeEvent;
@@ -92,7 +95,12 @@ const ProfilScreen = () => {
 
     return (
         
-        <View style={styles.grandeContainor}>
+        <View style={[
+            styles.grandeContainor,
+            {
+                backgroundColor: theme === "dark" ? colors.dark.background : colors.light.background
+            }
+            ]}>
         <ScrollView 
             stickyHeaderIndices={[2]} 
             showsVerticalScrollIndicator={false}
@@ -119,13 +127,22 @@ const ProfilScreen = () => {
                         </View>
                         <View style={styles.iconsActions}>
                             <View style={styles.upIcons}>
-                                <FontAwesome name="star-o" size={19} color={colors.white} />
+                                <FontAwesome 
+                                    name="star-o" 
+                                    size={19} 
+                                    color={theme === 'dark' ? "white" : "black"} />
                             </View>
                             <View style={styles.upIcons}>
-                                <Fontisto name="bell" size={19} color={colors.white} />
+                                <Fontisto 
+                                    name="bell" 
+                                    size={19} 
+                                    color={theme === 'dark' ? "white" : "black"} />
                             </View>
                             <View style={styles.upIcons}>
-                                <MaterialCommunityIcons name="email-send-outline" size={19} color={colors.white} />
+                                <MaterialCommunityIcons 
+                                    name="email-send-outline" 
+                                    size={19} 
+                                    color={theme === 'dark' ? "white" : "black"} />
                             </View>
                         </View>
                     </View>
@@ -203,7 +220,7 @@ const ProfilScreen = () => {
                         <View>
                             <Button 
                                 title="Posts" 
-                                color={contentType === "posts" ? colors.white : colors.medium} 
+                                color={contentType === "posts" ? theme === "dark" ? colors.white : 'black' : colors.medium} 
                                 onPress={() => setContentType('posts')} 
                             />
                             {contentType === "posts" &&
@@ -233,6 +250,7 @@ const ProfilScreen = () => {
                 {contentType === "posts" &&
                 <>
                     <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={32445} blurred={false} description={description} />
+                    <SurveyCard subject='Pensez vous que cette appli éclatée va marcher un jour ?' name={name} username={username} source={profilPicture} />
                     <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} username={username} name={name} likes={32445} description={description} />
                     <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={324} blurred={!isSub} description={description} />
                     <PostCard source={profilPicture} onTipsPress={() => bottomSheetModalRef.current?.present()} images={["https://source.unsplash.com/random/21"]} username={username} name={name} likes={2005} blurred={false} description={description} />
@@ -254,7 +272,6 @@ const ProfilScreen = () => {
 const styles = StyleSheet.create({
     grandeContainor: {
         flex: 1,
-        backgroundColor: colors.dark.background,
         paddingBottom: 80// prendre en compte la hauteur de la barre d'état
     },
     scrollView: {
@@ -365,5 +382,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 })
+
 
 export default ProfilScreen;

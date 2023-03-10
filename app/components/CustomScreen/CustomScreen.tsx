@@ -8,14 +8,15 @@ import colors from '../../config/colors'
 interface Props {
   children: React.ReactNode;
   drawerStyle?: ViewStyle;
+  screenStyle?: ViewStyle;
 }
 
 
-const CustomScreen: React.FC<Props> = ({ children, drawerStyle }) => {
+const CustomScreen: React.FC<Props> = ({ children, drawerStyle, screenStyle }) => {
 
   const theme = useAppSelector((state) => state.context.theme)
   return (
-    <SafeAreaView style={[styles.container, { paddingTop: Constants.statusBarHeight, backgroundColor: theme === "dark" ? colors.dark.background : colors.light.background, }]}>
+    <SafeAreaView style={[styles.container, { paddingTop: Constants.statusBarHeight, backgroundColor: theme === "dark" ? colors.dark.background : colors.light.background, }, screenStyle]}>
       <StatusBar barStyle={'light-content'} />
       <View style={
         [

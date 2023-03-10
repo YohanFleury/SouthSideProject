@@ -2,6 +2,7 @@ import React, {useMemo, useCallback, useState} from 'react'
 import { View, StyleSheet, Pressable, TouchableHighlight } from 'react-native'
 import BottomSheet, {BottomSheetModalProvider, BottomSheetModal, BottomSheetBackdropProps, BottomSheetBackdrop, BottomSheetModalProps} from '@gorhom/bottom-sheet';
 import { AntDesign, MaterialIcons, FontAwesome, MaterialCommunityIcons, Ionicons, Entypo} from '@expo/vector-icons';
+import { useAppSelector } from '../../../redux/store';
 
 import colors from '../../../config/colors';
 import CustomText from '../../CustomText/CustomText';
@@ -17,6 +18,8 @@ interface TipsModalProps {
 
 
 const TipsModal: React.FC<TipsModalProps> = ({ tipsModalRef }) => {
+
+    const theme = useAppSelector(state => state.context.theme)
 
     const [tipValue, setTipValue] = useState<string>("")
     const [tipMessage, setTipMessage] = useState<string>("")
@@ -48,7 +51,7 @@ const TipsModal: React.FC<TipsModalProps> = ({ tipsModalRef }) => {
         backdropComponent={renderBackdrop}
         snapPoints={snapPoints}
         backgroundStyle={{
-            backgroundColor: colors.dark.background, 
+            backgroundColor: theme === 'dark' ? colors.dark.background : colors.light.background, 
             borderRadius: 35,
             borderTopColor: colors.lightGrey,
             borderLeftColor: colors.lightGrey,
@@ -59,7 +62,10 @@ const TipsModal: React.FC<TipsModalProps> = ({ tipsModalRef }) => {
         onDismiss={handleDismiss}
         onChange={e => setIndex(e)}
         >
-            <View style={styles.contentContainer}>
+            <View style={[
+                styles.contentContainer, 
+                {backgroundColor: theme === "dark" ? colors.dark.background : colors.light.background}
+                ]}>
                 <CustomText style={{marginTop: 10}}>Laisser un pourboire</CustomText>
                 <View style={styles.container}>
                     <View>
